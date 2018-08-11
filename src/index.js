@@ -14,10 +14,11 @@ const ipfs = new IPFS({
   config: {
     Addresses: {
       Swarm: [
+        // // experimental webrtc 
         // "/ip4/0.0.0.0/tcp/4002",
         // "/ip4/127.0.0.1/tcp/4003/ws",
-        '/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star',
         // "/dns4/wrtc-star.discovery.libp2p.io/tcp/443/wss/p2p-webrtc-star"
+        '/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star',
       ]
     }
   }
@@ -30,16 +31,28 @@ ipfs.once('ready', () => {
   });
 
   const room = Room(ipfs, 'ipfs-pbsub-demo');
-
   console.log(room);
-  room.on("peer joined", (peer) => {
-    console.log('peer', peer, "joined")
-  });
-  room.on("peer left", (peer) => {
-    console.log('peer', peer, "left")
-  });
+
   room.on('subscribed', () => {
-    console.log('now connected!');
+    console.log('now connected to room!');
+
+    // setInterval(() => {
+    //   console.log("broadcasting...");
+    //   room.broadcast("supz");
+    // }, 4000);
+  });
+
+  room.on("peer joined", (peer) => {
+    console.log('peer with address', peer, "joined");
+    room.sendTo(peer, "sup" + peer + "!");
+  });
+
+  room.on("peer left", (peer) => {
+    console.log('peer with address', peer, "left")
+  });
+
+  room.on("message", message => {
+    console.log('got message from', message.from, ":", message.data.toString());
   });
 });
 
