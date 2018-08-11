@@ -1,0 +1,19 @@
+{
+  "name": "pubsub-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "http-server -c-1 -p 1234 public",
+    "build": "browserify src/index.js -o public/index.js -d",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "browserify": "^16.2.2",
+    "http-server": "^0.11.1",
+    "ipfs": "^0.31.4",
+    "ipfs-pubsub-room": "^1.4.0"
+  }
+}
