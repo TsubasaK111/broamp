@@ -5,13 +5,22 @@
   "main": "src/index.js",
   "scripts": {
     "start": "http-server -c-1 -p 1234 public",
-    "build": "browserify src/index.js -o public/index.js -d",
+    "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "html-webpack-plugin": "^2.30.1",
+    "uglifyjs-webpack-plugin": "^1.2.0",
+    "webpack": "^3.11.0"
+  },
   "dependencies": {
-    "browserify": "^16.2.2",
+    "buffer": "^5.2.0",
     "http-server": "^0.11.1",
     "ipfs": "^0.31.4",
     "ipfs-pubsub-room": "^1.4.0"
