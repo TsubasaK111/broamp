@@ -1,28 +1,11 @@
-console.log('sup dawags');
-
 const IPFS = require('ipfs');
 const Room = require('ipfs-pubsub-room');
+const { Buffer } = require('buffer');
+const config = require('./config');
+
+const ipfs = new IPFS({ ...config.ipfs });
 
 console.log(Room);
-const repo = () => 'ipfs/pubsub-demo/' + Math.random();
-
-const ipfs = new IPFS({
-  repo: repo(),
-  EXPERIMENTAL: {
-    pubsub: true,
-  },
-  config: {
-    Addresses: {
-      Swarm: [
-        // // experimental webrtc 
-        // "/ip4/0.0.0.0/tcp/4002",
-        // "/ip4/127.0.0.1/tcp/4003/ws",
-        // "/dns4/wrtc-star.discovery.libp2p.io/tcp/443/wss/p2p-webrtc-star"
-        '/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star',
-      ]
-    }
-  }
-});
 
 ipfs.once('ready', () => {
   ipfs.id((err, info) => {
@@ -36,15 +19,19 @@ ipfs.once('ready', () => {
   room.on('subscribed', () => {
     console.log('now connected to room!');
 
-    // setInterval(() => {
-    //   console.log("broadcasting...");
-    //   room.broadcast("supz");
-    // }, 4000);
+    setInterval(() => {
+      console.log("broadcasting...");
+      room.broadcast("supz");
+    }, 4000);
   });
 
   room.on("peer joined", (peer) => {
     console.log('peer with address', peer, "joined");
     room.sendTo(peer, "sup" + peer + "!");
+    ipfs.files.add( ipfs.types.Buffer.from("'testtesttest"), (err, files) => {
+      console.log(files);
+      room.sendTo(peer, files);
+    });
   });
 
   room.on("peer left", (peer) => {
@@ -56,3 +43,5 @@ ipfs.once('ready', () => {
   });
 });
 
+// TODO: send files from peer to peer
+// TODO: make simple interface to ad-hoc send messages/files to each other.
