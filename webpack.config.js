@@ -5,7 +5,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  devtool: 'source-map',
+  devtool: 'inline-cheap-module-source-map',
   entry: [
     './src/index.js'
   ],
@@ -27,12 +27,10 @@ module.exports = {
       {
         test: /\.js$/,
         include: path.join(__dirname, 'src'),
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['babel-preset-env'],
-            plugins: [require('babel-plugin-transform-object-rest-spread')],
-          }
+        loader: 'babel-loader',
+        options: {
+          presets: ['babel-preset-env'],
+          plugins: [require('babel-plugin-transform-object-rest-spread')],
         }
       }
     ]
