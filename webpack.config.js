@@ -9,18 +9,11 @@ module.exports = {
   devtool: 'source-map',
   // devtool: 'inline-cheap-module-source-map',
   entry: [
+    'babel-polyfill',
     './src/index.js'
   ],
   module: {
     rules: [
-      {
-        test: /\.vue$/,
-        loader: "vue-loader",
-        options: {
-          loaders: {},
-          // other vue-loader options go here
-        },
-      },
       {
         test: /\.js$/,
         include: path.join(__dirname, 'src'),
@@ -29,6 +22,10 @@ module.exports = {
           presets: ['babel-preset-env'],
           plugins: [require('babel-plugin-transform-object-rest-spread')],
         }
+      },
+      {
+        test: /\.vue$/,
+        loader: "vue-loader",
       },
       {
         test: /\.css$/,

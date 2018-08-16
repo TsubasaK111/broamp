@@ -26,7 +26,7 @@
     "webpack-dev-server": "^2.9.1"
   },
   "dependencies": {
-    "buffer": "^5.2.0",
+    "babel-polyfill": "^6.26.0",
     "http-server": "^0.11.1",
     "ipfs": "^0.31.4",
     "ipfs-pubsub-room": "^1.4.0",
