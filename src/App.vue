@@ -1,6 +1,6 @@
 <template>
   <div id="dapp">
-    <h1> store.state.title </h1>
+    <h1> {{$store.state.title}} </h1>
   </div>
 </template>
 
