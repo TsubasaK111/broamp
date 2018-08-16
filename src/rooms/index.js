@@ -1,10 +1,9 @@
 const IPFS = require('ipfs');
 const Room = require('ipfs-pubsub-room');
-const { Buffer } = require('buffer');
 
-export const roomManager = (config) => {
-  console.log(config)
-  const ipfs = new IPFS({ ...config.ipfs });
+const roomManager = (ipfsConfig) => {
+  console.log(ipfsConfig);
+  const ipfs = new IPFS({ ...ipfsConfig });
 
   ipfs.once('ready', () => {
     ipfs.id((err, info) => {
@@ -18,10 +17,10 @@ export const roomManager = (config) => {
     room.on('subscribed', () => {
       console.log('now connected to room!');
 
-      setInterval(() => {
-        console.log("broadcasting...");
-        room.broadcast("supz");
-      }, 4000);
+      // setInterval(() => {
+      //   console.log("broadcasting...");
+      //   room.broadcast("supz");
+      // }, 4000);
     });
 
     room.on("peer joined", (peer) => {
@@ -46,3 +45,30 @@ export const roomManager = (config) => {
   // TODO: make simple interface to ad-hoc send messages/files to each other.
 
 }
+
+const RoomPlugin = function (ipfsConfig) {
+  console.log(ipfsConfig);
+  this.config = ipfsConfig;
+
+  this.install = async (Vue) => {
+    new Promise((resolve, reject) => {
+      const ipfs = new IPFS({ ...this.config });
+
+      ipfs.once('ready', () => {
+        ipfs.id((err, info) => {
+          if (err) reject(err);
+          console.log('IPFS node ready with address ', info.id);
+        });
+
+        const room = Room(ipfs, 'ipfs-pbsub-demo');
+        console.log(room);
+        resolve(room);
+      })
+    })
+      .then((room) => {
+        Vue.prototype.room = room;
+      });
+  }
+}
+
+module.exports = { roomManager, RoomPlugin };

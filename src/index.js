@@ -2,10 +2,13 @@ import Vue from "vue";
 import Vuex from "vuex";
 import App from "./App.vue";
 
-import { roomManager } from "./rooms";
+import { RoomPlugin , roomManager } from "./rooms";
 import config from "./config";
 
 Vue.use(Vuex);
+const ipfsRoom = new RoomPlugin(config.ipfs);
+
+Vue.use(ipfsRoom);
 
 const store = new Vuex.Store({
   state: {
@@ -35,4 +38,4 @@ const app = new Vue({
   render: (h) => h(App),
 });
 
-roomManager(config);
+// roomManager(config.ipfs);
