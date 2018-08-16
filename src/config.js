@@ -1,6 +1,7 @@
+// for dev purposes, make repo different even if from same ip address.
 const repo = () => 'ipfs/pubsub-demo/' + Math.random();
 
-module.exports = {
+const config = {
   ipfs: {
     repo: repo(),
     EXPERIMENTAL: {
@@ -19,3 +20,5 @@ module.exports = {
     }
   }
 }
+
+export default config;
