@@ -6,7 +6,7 @@
   "scripts": {
     "start": "http-server -c-1 -p 1234 public",
     "build": "webpack",
-    "dev": "webpack-dev-server --hot",
+    "hack": "webpack-dev-server --hot",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

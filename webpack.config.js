@@ -1,27 +1,15 @@
 'use strict'
 
-const path = require('path')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
 
 module.exports = {
-  devtool: 'inline-cheap-module-source-map',
+  devtool: 'source-map',
+  // devtool: 'inline-cheap-module-source-map',
   entry: [
     './src/index.js'
-  ],
-  plugins: [
-    new UglifyJsPlugin({
-      sourceMap: true,
-      uglifyOptions: {
-        mangle: false,
-        compress: false
-      }
-    }),
-    new HtmlWebpackPlugin({
-      title: 'IPFS Videostream example',
-      template: 'src/index.html'
-    })
   ],
   module: {
     rules: [
@@ -34,10 +22,6 @@ module.exports = {
         },
       },
       {
-        test: /\.css$/,
-        use: ["vue-style-loader", "css-loader"],
-      },
-      {
         test: /\.js$/,
         include: path.join(__dirname, 'src'),
         loader: 'babel-loader',
@@ -45,12 +29,26 @@ module.exports = {
           presets: ['babel-preset-env'],
           plugins: [require('babel-plugin-transform-object-rest-spread')],
         }
-      }
+      },
+      {
+        test: /\.css$/,
+        use: ["vue-style-loader", "css-loader"],
+      },
     ]
   },
   plugins: [
-    new VueLoaderPlugin()
-],
+    new HtmlWebpackPlugin({
+      template: 'src/index.html'
+    }),
+    new UglifyJsPlugin({
+      sourceMap: true,
+      uglifyOptions: {
+        mangle: false,
+        compress: false
+      }
+    }),
+    new VueLoaderPlugin(),
+  ],
   resolve: {
     alias: {
       vue$: "vue/dist/vue.esm.js",
@@ -59,6 +57,6 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'public'),
-    filename: 'index.js'
+    filename: 'bundle.js'
   }
 }
