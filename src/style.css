@@ -1,0 +1,62 @@
+body {
+  background-color: lightgray;
+  font-size: 14px;
+  font-family: Verdana;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.bodyBox {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.navBox {
+  background-color: lightgray;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logoBox {
+  display: flex;
+  align-items: center;
+}
+
+.inputLabel {
+  display: inline-block;
+  background-color: #eee;
+  padding: 12px 12px;
+  border-radius: 24px;
+  cursor: pointer;
+}
+
+.logoText {
+  font-size: 48px;
+  font-weight: 900;
+  /* letter-spacing: -2px; */
+  letter-spacing: -0.0625em;
+  color: white;
+  background: linear-gradient(#FFF, #FFCA71, #FF8600);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 2.5px black;
+}
+
+.visBox {
+  display: flex; 
+}
+
+.buttonsBox {
+  /* position: fixed;
+  bottom: 0; */
+  display: flex;
+  align-items: center;
+}

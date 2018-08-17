@@ -31,6 +31,15 @@ module.exports = {
         test: /\.css$/,
         use: ["vue-style-loader", "css-loader"],
       },
+      {
+        test: /\.(mp3|txt|png|jpg|gif|svg)$/,
+        include: path.resolve(__dirname, './src'),
+        loader: "file-loader",
+        options: {
+          name: '[name].[ext]',
+          useRelativePath: true,
+        },
+      },
     ]
   },
   plugins: [
