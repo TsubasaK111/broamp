@@ -4,6 +4,8 @@
     <div class="debug">{{$store.state.peers}}</div>
     <div class="debug">{{$store.state.audioSrc}}</div>
 
+    <div id="output"></div>
+
     <div class="inputBox">
       <label class="inputLabel">
         <i class="fa fa-cloud-upload"></i> select file
@@ -13,6 +15,7 @@
         id="audioElement"
         :src="$store.state.audioSrc"
         controls=true
+        volume="0.7"
       ></audio>
     </div>
   </div>
@@ -25,43 +28,82 @@ export default {
   name: "App",
   components: {},
   created() {
-    // console.log(this.$ipfs);
-    // const audioElement = document.getElementById('audioElement');
-    // audioElement.volume = 0.7; //don't destroy your speakers bro
-    // TODO: start creating simple form that enables messaging
+    // do nothing for now
   },
   methods: {
     loadFile: function(event, options = {}) {
-      const audioFile = event.target.files[0];
-      if (!audioFile) throw Error("no file chosen");
+      const log = line => {
+        const output = document.getElementById("output");
+        let message;
+
+        if (line.message) {
+          message = `Error: ${line.message.toString()}`;
+        } else {
+          message = line;
+        }
+
+        if (message) {
+          const node = document.createTextNode(`${message}\r\n`);
+          output.appendChild(node);
+
+          output.scrollTop = output.offsetHeight;
+          console.log(message);
+          return node;
+        }
+      };
+
+      const file = event.target.files[0];
+      if (!file) throw Error("no file chosen");
 
       const audioEl = document.getElementById("audioElement");
 
-      // listen for event
-      const fr = new FileReader();
-      fr.onload = event => {
-        const newAudioSrc = event.target.result;
-        saveToIpfs(fr);
-        // this.$store.commit("changeAudioSrc", newAudioSrc);
+      const progress = log(`IPFS: Adding ${file.name} 0%`);
+
+      const reader = new window.FileReader();
+
+      console.log(event.target.result);
+      console.log(event.target);
+
+      reader.onload = event => {
+        this.$ipfs.files
+          .add(
+            {
+              path: file.name,
+              content: this.$ipfs.types.Buffer.from(event.target.result)
+            },
+            {
+              progress: addedBytes => {
+                progress.textContent = `IPFS: Adding ${file.name} ${parseInt(
+                  addedBytes / file.size * 100
+                )}%\r\n`;
+                console.log(progress.textContent);
+              }
+            }
+          )
+          .then(added => {
+            console.log(added);
+            const hash = added[0].hash;
+            log(`IPFS: Added ${hash}`);
+            console.log(added[0]);
+
+            // NOTE: dead, but possibly useful ideas:
+            // const file = new Blob([added], { type: 'application/octet-stream' });
+            // const fileURL = URL.createObjectURL(file);
+            // console.log(fileURL);
+            // window.open(fileURL);
+            // window.open(added[0].path);
+
+            const audioSrcUrl = `https://ipfs.io/ipfs/${added[0].hash}`;
+            log(`sourceUrl: audioSrcUrl`);
+
+            return audioSrcUrl;
+          })
+          .then(audioSrcUrl => {
+            this.$store.commit("changeAudioSrc", audioSrcUrl);
+          })
       };
 
-      // trigger event
-      fr.readAsDataURL(audioFile);
-
-      const saveToIpfs = reader => {
-        let ipfsId;
-        const buffer = Buffer.from(reader.result);
-        this.$ipfs.files.add(buffer)
-        .then(files => {
-          const audioSrcUrl = `https://ipfs.io/ipfs/${files[0].path}`
-          console.log(audioSrcUrl)
-          this.$store.commit("changeAudioSrc", audioSrcUrl);
-          // room.sendTo(peer, files);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-      };
+      reader.readAsArrayBuffer(file);
     }
   }
 };
