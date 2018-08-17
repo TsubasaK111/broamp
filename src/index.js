@@ -2,16 +2,16 @@ import Vue from "vue";
 import Vuex from "vuex";
 import App from "./App.vue";
 
-import { RoomVuexPlugin } from "./rooms";
+import { IpfsPlugin, RoomVuexPlugin } from "./rooms";
 import config from "./config";
+import './audio/Odesza-Above_The_Middle.mp3';
 
-// const ipfsRoom = new RoomPlugin(config.ipfs);
+// const ipfsRoom = new IpfsPlugin(config.ipfs);
 const vuexRoom = new RoomVuexPlugin(config.ipfs);
+const ipfsPlugin = new IpfsPlugin(config.ipfs);
 
 Vue.use(Vuex);
-// Vue.use(ipfsRoom);
-
-// Vue.room
+Vue.use(ipfsPlugin);
 
 const store = new Vuex.Store({
   state: {
@@ -19,6 +19,7 @@ const store = new Vuex.Store({
     ipfsStatus: "created",
     peers: [],
     messages: [],
+    audioSrc: "./audio/Odesza-Above_The_Middle.mp3",
   },
   mutations: {
     ipfsConnection(state, newStatus) {
@@ -34,11 +35,8 @@ const store = new Vuex.Store({
     addMessage(state, newMessage) {
       state.messages.push(newMessage);
     },
-    increment(state) {
-      state.count++;
-    },
-    michaelGoHome(state) {
-      console.log("michael gohome");
+    changeAudioSrc(state, newAudioSrc){
+      state.audioSrc = newAudioSrc;
     },
   },
   plugins: [vuexRoom]
