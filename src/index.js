@@ -2,34 +2,46 @@ import Vue from "vue";
 import Vuex from "vuex";
 import App from "./App.vue";
 
-import { RoomPlugin , roomManager } from "./rooms";
+import { RoomPlugin, RoomVuexPlugin } from "./rooms";
 import config from "./config";
 
-Vue.use(Vuex);
-const ipfsRoom = new RoomPlugin(config.ipfs);
+// const ipfsRoom = new RoomPlugin(config.ipfs);
+const vuexRoom = new RoomVuexPlugin(config.ipfs);
 
-Vue.use(ipfsRoom);
+Vue.use(Vuex);
+// Vue.use(ipfsRoom);
+
+// Vue.room
 
 const store = new Vuex.Store({
   state: {
-    title: "photo viewer 2000",
-    photos: [],
-    currentView: "AllPhotos",
-    selectedPhoto: null,
+    title: "IPFS PubSub x Vue x Vuex",
+    ipfsStatus: "created",
+    peers: [],
+    messages: [],
   },
   mutations: {
+    ipfsConnection(state, newStatus) {
+      state.ipfsStatus = newStatus;
+    },
+    peerJoined(state, newPeer) {
+      if (state.peers.includes(newPeer)) return;
+      state.peers.push(newPeer);
+    },
+    peerLeft(state, leftPeer) {
+      state.peers = state.peers.filter(peer => peer !== leftPeer);
+    },
+    addMessage(state, newMessage) {
+      state.messages.push(newMessage);
+    },
     increment(state) {
       state.count++;
     },
-    gohome(state) {
-      console.log("vuex gohome");
-      state.currentView = "AllPhotos";
-    },
-    singlePhoto(state, photo) {
-      state.currentView = "SinglePhoto";
-      state.selectedPhoto = photo;
+    michaelGoHome(state) {
+      console.log("michael gohome");
     },
   },
+  plugins: [vuexRoom]
 });
 
 const app = new Vue({
