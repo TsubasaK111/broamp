@@ -14,14 +14,18 @@ const RoomVuexPlugin = function (ipfsConfig) {
           if (err) reject(err);
           store.commit('ipfsConnection', 'ready');
           console.log('IPFS node ready with address ', info.id);
+          resolve(ipfs);
         });
-
-        const room = Room(ipfs, 'ipfs-pbsub-demo');
-        console.log(room);
-        resolve(room, ipfs);
-      })
+      });
     })
-      .then((room, ipfs) => {
+      .then(ipfs => {
+        const room = Room(ipfs, 'ipfs-pbsub-demo');
+        return {room, ipfs};
+      })
+      .then(({room, ipfs}) => {
+        console.log(ipfs)
+        console.log(ipfs.files.add)
+
         room.on('subscribed', () => {
           console.log('now connected to room!');
           store.commit('ipfsConnection', 'subscribed');
@@ -36,12 +40,14 @@ const RoomVuexPlugin = function (ipfsConfig) {
           console.log('peer with address', peer, "joined");
           store.commit('peerJoined', peer);
 
-          room.sendTo(peer, "sup" + peer + "!");
           // TODO: enable sending files
-          // ipfs.files.add(ipfs.types.Buffer.from("'testtesttest"), (err, files) => {
-          //   console.log(files);
-          //   room.sendTo(peer, files);
-          // });
+          ipfs.files.add(ipfs.types.Buffer.from("'testtesttest"), (err, files) => {
+            console.log(files);
+            room.sendTo(peer, files);
+          });
+
+          room.sendTo(peer, "sup" + peer + "!");
+
         });
 
         room.on("peer left", (peer) => {

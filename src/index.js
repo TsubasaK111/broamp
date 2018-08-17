@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import App from "./App.vue";
 
-import { RoomPlugin, RoomVuexPlugin } from "./rooms";
+import { RoomVuexPlugin } from "./rooms";
 import config from "./config";
 
 // const ipfsRoom = new RoomPlugin(config.ipfs);
