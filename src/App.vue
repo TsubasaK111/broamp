@@ -6,8 +6,6 @@
 </template>
 
 <script>
-import Vue from 'Vue';
-
 export default {
   name: "App",
   components: {
