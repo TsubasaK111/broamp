@@ -4,8 +4,9 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "start": "http-server -c-1 -p 1234 public",
+    "start": "http-server public",
     "build": "webpack",
+    "local:start": "http-server -c-1 -p 1234 public",
     "hack": "webpack-dev-server --hot",
     "test": "echo \"Error: no test specified, but we're lazy so let's say success!\" && exit 0",
     "heroku-postbuild": "yarn build"
