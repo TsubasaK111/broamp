@@ -20,6 +20,9 @@ const store = new Vuex.Store({
     peers: [],
     messages: [],
     audioSrc: "./audio/Odesza-Above_The_Middle.mp3",
+    audioPaused: true,
+    audioVolume: "0.7",
+    audioStatus: "created",
   },
   mutations: {
     ipfsConnection(state, newStatus) {
@@ -35,8 +38,29 @@ const store = new Vuex.Store({
     addMessage(state, newMessage) {
       state.messages.push(newMessage);
     },
-    changeAudioSrc(state, newAudioSrc){
+    updateAudioSrc(state, newAudioSrc) {
       state.audioSrc = newAudioSrc;
+    },
+    updateAudioStatus(state, newAudioStatus) {
+      state.audioStatus = newAudioStatus;
+    },
+    audioPlay(state){
+      state.audioPaused = false;
+    },
+    audioPause(state){
+      state.audioPaused = true;
+    },
+    broadcastChange(state, newAudioSrc){
+      console.log(`broadcastChange is trigged`)
+      state.audioSrc = newAudioSrc;
+    },
+    broadcastPlay(state) {
+      if (state.audioStatus !== 'canPlayThrough') throw Error('audio is not ready to play through, wait!')
+
+      state.audioPaused = false;
+    },
+    broadcastPause(state) {
+      state.audioPaused = true;
     },
   },
   plugins: [vuexRoom]

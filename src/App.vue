@@ -1,12 +1,18 @@
 <template>
   <div id="dapp">
     <h1> {{$store.state.title}} </h1>
-    <div class="debug">{{$store.state.peers}}</div>
-    <div class="debug">{{$store.state.audioSrc}}</div>
+    <div class="debug-box">
+      <h2>peers:</h2>
+      <div>{{$store.state.peers}}</div>
+      <h2>audioSrc:</h2>
+      <div>{{$store.state.audioSrc}}</div>
+      <h2>progress:</h2>
+      <div id="progress-output"></div>
+    </div>
 
-    <div id="output"></div>
 
     <div class="inputBox">
+      <h2>controls:</h2>
       <label class="inputLabel">
         <i class="fa fa-cloud-upload"></i> select file
         <input id="fileInput" type="file" accept="audio/*" @change="loadFile($event)"/>
@@ -14,8 +20,12 @@
       <audio
         id="audioElement"
         :src="$store.state.audioSrc"
+        :paused="$store.state.audioPaused"
+        :volume="$store.state.audioVolume"
         controls=true
-        volume="0.7"
+        @canplaythrough="$store.commit('updateAudioStatus', 'canPlayThrough')"
+        @play="$store.commit('broadcastPlay')"
+        @pause="$store.commit('broadcastPause')"
       ></audio>
     </div>
   </div>
@@ -31,38 +41,32 @@ export default {
     // do nothing for now
   },
   methods: {
+    log: function(line) {
+      const output = document.getElementById("progress-output");
+      let message;
+
+      if (line.message) {
+        message = `Error: ${line.message.toString()}`;
+      } else {
+        message = line;
+      }
+
+      if (message) {
+        const node = document.createTextNode(`${message}\r\n`);
+        output.appendChild(node);
+
+        output.scrollTop = output.offsetHeight;
+        console.log(message);
+        return node;
+      }
+    },
     loadFile: function(event, options = {}) {
-      const log = line => {
-        const output = document.getElementById("output");
-        let message;
-
-        if (line.message) {
-          message = `Error: ${line.message.toString()}`;
-        } else {
-          message = line;
-        }
-
-        if (message) {
-          const node = document.createTextNode(`${message}\r\n`);
-          output.appendChild(node);
-
-          output.scrollTop = output.offsetHeight;
-          console.log(message);
-          return node;
-        }
-      };
-
       const file = event.target.files[0];
       if (!file) throw Error("no file chosen");
 
       const audioEl = document.getElementById("audioElement");
-
-      const progress = log(`IPFS: Adding ${file.name} 0%`);
-
+      const progress = this.log(`IPFS: Adding ${file.name} 0%`);
       const reader = new window.FileReader();
-
-      console.log(event.target.result);
-      console.log(event.target);
 
       reader.onload = event => {
         this.$ipfs.files
@@ -76,31 +80,31 @@ export default {
                 progress.textContent = `IPFS: Adding ${file.name} ${parseInt(
                   addedBytes / file.size * 100
                 )}%\r\n`;
-                console.log(progress.textContent);
+                this.log(progress.textContent);
               }
             }
           )
           .then(added => {
-            console.log(added);
             const hash = added[0].hash;
-            log(`IPFS: Added ${hash}`);
-            console.log(added[0]);
+            this.log(`IPFS: Added ${hash}`);
+
+            // if audioEl.readyState = HAVE_ENOUGH_DATA	4
 
             // NOTE: dead, but possibly useful ideas:
             // const file = new Blob([added], { type: 'application/octet-stream' });
             // const fileURL = URL.createObjectURL(file);
-            // console.log(fileURL);
+            // console.this.log(fileURL);
             // window.open(fileURL);
             // window.open(added[0].path);
 
             const audioSrcUrl = `https://ipfs.io/ipfs/${added[0].hash}`;
-            log(`sourceUrl: audioSrcUrl`);
+            this.log(`sourceUrl: audioSrcUrl`);
 
             return audioSrcUrl;
           })
           .then(audioSrcUrl => {
-            this.$store.commit("changeAudioSrc", audioSrcUrl);
-          })
+            this.$store.commit("broadcastChange", audioSrcUrl);
+          });
       };
 
       reader.readAsArrayBuffer(file);

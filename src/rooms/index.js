@@ -47,11 +47,6 @@ const RoomVuexPlugin = function (ipfsConfig) {
         room.on('subscribed', () => {
           console.log('now connected to room!');
           store.commit('ipfsConnection', 'subscribed');
-
-          // setInterval(() => {
-          //   console.log("broadcasting...");
-          //   room.broadcast("supz");
-          // }, 4000);
         });
 
         room.on("peer joined", (peer) => {
@@ -68,21 +63,49 @@ const RoomVuexPlugin = function (ipfsConfig) {
 
         room.on("message", message => {
           console.log('got message from', message.from, ":", message.data.toString());
-          const payload = message.data.toString()
-          if(payload.startsWith('newAudioSrc:')){
-            const audioSrcUrl = payload.replace('newAudioSrc:','')
-            window.open(audioSrcUrl);
-          }
 
+          const [header, payload] = message.data.toString().split("::");
+
+          const audioEl = document.getElementById("audioElement");
+
+          switch (header) {
+            case ('broadcastChange'):
+              store.commit('updateAudioSrc', payload);
+              return;
+            case ("broadcastPlay"):
+              // todo: make sure you're playing the right track by comparing audioSrcUrl. 
+              // if store.state.
+
+              store.commit('audioPlay');
+              audioEl.play(); //TODO: this is janky. 
+              return;
+
+            case ("broadcastPause"):
+              store.commit('audioPause');
+              audioEl.pause();
+              return;
+            default:
+            // do nothing.
+          }
           store.commit('addMessage', message);
         });
 
-        // store.subscribe((mutation, state) => {
-        store.subscribe((mutation) => {
+        store.subscribe((mutation, state) => {
           // called after every mutation.
           // The mutation comes in the format of `{ type, payload }`.
-          if (mutation.type === 'changeAudioSrc') {
-            room.broadcast(`newAudioSrc:${mutation.payload}`);
+          switch (mutation.type) {
+            case ('broadcastChange'):
+              room.broadcast(`broadcastChange::${mutation.payload}`);
+              // store.commit('updateAudioSrc', audioSrcUrl);
+              return;
+            case ("broadcastPlay"):
+              room.broadcast(`broadcastPlay::${store.audioSrc}`);
+              return;
+            case ("broadcastPause"):
+              room.broadcast(`broadcastPause::${store.audioSrc}`);
+              return;
+            default:
+            // do nothing.
           }
         });
       });
