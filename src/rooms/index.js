@@ -77,7 +77,7 @@ const RoomVuexPlugin = function (ipfsConfig) {
               // if store.state.
 
               store.commit('audioPlay');
-              audioEl.play(); //TODO: this is janky. 
+              audioEl.play(); //TODO: this is janky.
               return;
 
             case ("broadcastPause"):
@@ -91,15 +91,19 @@ const RoomVuexPlugin = function (ipfsConfig) {
         });
 
         store.subscribe((mutation, state) => {
+          const audioEl = document.getElementById("audioElement");
+
           // called after every mutation.
           // The mutation comes in the format of `{ type, payload }`.
           switch (mutation.type) {
             case ('broadcastChange'):
               room.broadcast(`broadcastChange::${mutation.payload}`);
+              
               // store.commit('updateAudioSrc', audioSrcUrl);
               return;
             case ("broadcastPlay"):
               room.broadcast(`broadcastPlay::${store.audioSrc}`);
+              audioEl.currentTime -= 0.1;
               return;
             case ("broadcastPause"):
               room.broadcast(`broadcastPause::${store.audioSrc}`);
