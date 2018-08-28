@@ -47,10 +47,10 @@ module.exports = {
       template: 'src/index.html'
     }),
     new UglifyJsPlugin({
-      sourceMap: true,
+      sourceMap: false,
       uglifyOptions: {
         mangle: false,
-        compress: false
+        compress: true
       }
     }),
     new VueLoaderPlugin(),

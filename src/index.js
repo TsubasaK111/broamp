@@ -4,7 +4,6 @@ import App from "./App.vue";
 
 import { IpfsPlugin, RoomVuexPlugin } from "./rooms";
 import config from "./config";
-import './audio/Odesza-Above_The_Middle.mp3';
 
 // const ipfsRoom = new IpfsPlugin(config.ipfs);
 const vuexRoom = new RoomVuexPlugin(config.ipfs);
@@ -19,7 +18,7 @@ const store = new Vuex.Store({
     ipfsStatus: "created",
     peers: [],
     messages: [],
-    audioSrc: "./audio/Odesza-Above_The_Middle.mp3",
+    audioSrc: "",
     audioPaused: true,
     audioVolume: "0.7",
     audioStatus: "created",
