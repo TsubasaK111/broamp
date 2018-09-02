@@ -33,6 +33,7 @@
     "http-server": "^0.11.1",
     "ipfs": "^0.31.4",
     "ipfs-pubsub-room": "^1.4.0",
+    "orbit-db": "^0.19.9",
     "vue": "^2.5.17",
     "vuex": "^3.0.1"
   }
