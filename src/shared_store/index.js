@@ -2,12 +2,14 @@ const IPFS = require('ipfs');
 const Room = require('ipfs-pubsub-room');
 
 const IpfsPlugin = function (ipfsConfig) {
+  this.config = ipfsConfig;
+
   return {
     install: async (Vue, ipfsConfig, state) => {
       new Promise((resolve, reject) => {
         const ipfs = new IPFS({ ...this.config });
 
-        ipfs.once('ready', () => {
+        ipfs.on('ready', () => {
           ipfs.id((err, info) => {
             if (err) reject(err);
             console.log('IPFS node ready with address ', info.id);
@@ -17,13 +19,13 @@ const IpfsPlugin = function (ipfsConfig) {
       })
         .then(ipfs => {
           Vue.prototype.$ipfs = ipfs;
+          Vue.prototype.$room
         });
     }
   }
 }
 
 const RoomVuexPlugin = function (ipfsConfig) {
-  console.log(ipfsConfig);
   this.config = ipfsConfig;
 
   return async (store) => {
