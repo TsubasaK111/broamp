@@ -7,8 +7,6 @@ import OrbitDB from 'orbit-db'
 //   }
 // }
 
-console.log("sups");
-
 const OrbitDBPlugin = function (ipfsConfig) {
   console.log(ipfsConfig);
   this.config = ipfsConfig;

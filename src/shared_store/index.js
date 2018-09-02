@@ -74,7 +74,7 @@ const RoomVuexPlugin = function (ipfsConfig) {
             case ('broadcastChange'):
               store.commit('updateAudioSrc', payload);
               return;
-            case ("broadcastPlay"):
+            case ('broadcastPlay'):
               // todo: make sure you're playing the right track by comparing audioSrcUrl. 
               // if store.state.
 
@@ -82,7 +82,7 @@ const RoomVuexPlugin = function (ipfsConfig) {
               audioEl.play(); //TODO: this is janky.
               return;
 
-            case ("broadcastPause"):
+            case ('broadcastPause'):
               store.commit('audioPause');
               audioEl.pause();
               return;
@@ -96,11 +96,10 @@ const RoomVuexPlugin = function (ipfsConfig) {
           const audioEl = document.getElementById("audioElement");
 
           // called after every mutation.
-          // The mutation comes in the format of `{ type, payload }`.
+          // The mutation comes in the format of `{ type::payload }`.
           switch (mutation.type) {
             case ('broadcastChange'):
               room.broadcast(`broadcastChange::${mutation.payload}`);
-              
               // store.commit('updateAudioSrc', audioSrcUrl);
               return;
             case ("broadcastPlay"):

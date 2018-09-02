@@ -6,7 +6,7 @@ import { IpfsPlugin, RoomVuexPlugin } from "./shared_store";
 import { OrbitDBPlugin } from "./shared_store/OrbitDbPlugin";
 
 import config from "./config";
-import {mutations} from "./store/mutations";
+import { mutations } from "./store/mutations";
 
 // const ipfsRoom = new IpfsPlugin(config.ipfs);
 const vuexRoom = new RoomVuexPlugin(config.ipfs);
