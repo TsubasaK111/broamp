@@ -1,38 +1,58 @@
 <template>
-  <div id="dapp">
-    <h1> {{$store.state.title}} </h1>
-    <div class="debug-box">
-      <h2>peers:</h2>
-      <div>{{$store.state.peers}}</div>
-      <h2>audioSrc:</h2>
-      <div>{{$store.state.audioSrc}}</div>
-      <h2>progress:</h2>
-      <div id="progress-output"></div>
-    </div>
-
-
-    <div class="inputBox">
-      <h2>controls:</h2>
-      <label class="inputLabel">
-        <i class="fa fa-cloud-upload"></i> select file
-        <input id="fileInput" type="file" accept="audio/*" @change="loadFile($event)"/>
-      </label>
-      <audio
-        id="audioElement"
-        :src="$store.state.audioSrc"
-        :paused="$store.state.audioPaused"
-        :volume="$store.state.audioVolume"
-        controls=true
-        @canplaythrough="$store.commit('updateAudioStatus', 'canPlayThrough')"
-        @play="$store.commit('broadcastPlay')"
-        @pause="$store.commit('broadcastPause')"
-      ></audio>
-    </div>
+<div id="dapp">
+  <h1> {{$store.state.title}} </h1>
+  <div class="debug-box">
+    <h2>peers:</h2>
+    <div>{{$store.state.peers}}</div>
+    <h2>audioSrc:</h2>
+    <div>{{$store.state.audioSrc}}</div>
+    <h2>progress:</h2>
+    <div id="progress-output"></div>
   </div>
+
+
+  <div class="inputBox">
+    <h2>controls:</h2>
+    <label class="inputLabel">
+      <i class="fa fa-cloud-upload"></i> select file
+      <input id="fileInput" type="file" accept="audio/*" @change="loadFile($event)"/>
+    </label>
+    <audio
+      id="audioElement"
+      :src="$store.state.audioSrc"
+      :paused="$store.state.audioPaused"
+      :volume="$store.state.audioVolume"
+      controls=true
+      @canplaythrough="$store.commit('updateAudioStatus', 'canPlayThrough')"
+      @play="$store.commit('broadcastPlay')"
+      @pause="$store.commit('broadcastPause')"
+    ></audio>
+  </div>
+  <div class="visBox">
+    <div id="spectrogramVis"></div>
+    <div id="verticalFrequencyVis"></div>
+  </div>
+</div>
 </template>
 
 <script>
 import "./style.css";
+import AudioSource from "./utils/audioSource";
+import VerticalFrequencyVis from "./visualizations/verticalFrequencyVis";
+import DynamicSpectrogram from "./visualizations/dynamicSpectrogram";
+import "./audio/Odesza-Above_The_Middle.mp3";
+
+document.addEventListener("DOMContentLoaded", () => {
+  const audioElement = document.getElementById("audioElement");
+  audioElement.src = "./audio/Odesza-Above_The_Middle.mp3";
+  audioElement.controls = true;
+  audioElement.volume = 0.7; //don't destroy your speakers bro
+
+  const audioSource = new AudioSource();
+  new VerticalFrequencyVis(audioSource.analyser);
+  new DynamicSpectrogram(audioSource, audioElement);
+  // gkheadCanvas();
+});
 
 export default {
   name: "App",

@@ -2,8 +2,11 @@ import Vue from "vue";
 import Vuex from "vuex";
 import App from "./App.vue";
 
+
 import { IpfsPlugin, RoomVuexPlugin } from "./shared_store";
 import { OrbitDBPlugin } from "./shared_store/OrbitDbPlugin";
+
+
 
 import config from "./config";
 import { mutations } from "./store/mutations";
@@ -23,10 +26,11 @@ const store = new Vuex.Store({
     ipfsStatus: "created",
     peers: [],
     messages: [],
-    audioSrc: "",
+    audioSrc: "./audio/Odesza-Above_The_Middle.mp3",
     audioPaused: true,
     audioVolume: "0.7",
     audioStatus: "created",
+
   },
   mutations: mutations,
   plugins: [vuexRoom]
