@@ -16,6 +16,7 @@ const OrbitDBPlugin = function (ipfsConfig) {
       const ipfs = new IPFS({ ...ipfsConfig });
 
       console.log('Installing OrbitDB ...')
+
       function createDB() {
         new Promise((resolve, reject) => {
           ipfs.on('error', e => reject(e))
@@ -30,17 +31,21 @@ const OrbitDBPlugin = function (ipfsConfig) {
       }
 
       try {
-        const db = await createDB()
-        Vue.prototype.orbit = {
+        const db = await createDB();
+
+        Vue.prototype.$orbit = {
           get(query) {
-            return db.get(query)
+            return db.get(query);
           },
           put(doc) {
-            return db.put(doc)
+            return db.put(doc);
           },
           query(queryFn) {
-            return db.query(queryFn)
-          }
+            return db.query(queryFn);
+          },
+          onReplicated: async (callback) => {
+            return db.events.on('replicated', callback)
+          },
         }
         console.log('OrbitDB installed ...')
       } catch (e) {

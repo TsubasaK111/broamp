@@ -28,35 +28,20 @@
       @pause="$store.commit('broadcastPause')"
     ></audio>
   </div>
-  <div class="visBox">
-    <div id="spectrogramVis"></div>
-    <div id="verticalFrequencyVis"></div>
-  </div>
+  <Visualizations />
 </div>
 </template>
 
 <script>
+import Visualizations from "./components/Visualizations";
+import OrbitDbHandler from "./components/OrbitDbHandler";
 import "./style.css";
-import AudioSource from "./utils/audioSource";
-import VerticalFrequencyVis from "./visualizations/verticalFrequencyVis";
-import DynamicSpectrogram from "./visualizations/dynamicSpectrogram";
-import "./audio/Odesza-Above_The_Middle.mp3";
-
-document.addEventListener("DOMContentLoaded", () => {
-  const audioElement = document.getElementById("audioElement");
-  audioElement.src = "./audio/Odesza-Above_The_Middle.mp3";
-  audioElement.controls = true;
-  audioElement.volume = 0.7; //don't destroy your speakers bro
-
-  const audioSource = new AudioSource();
-  new VerticalFrequencyVis(audioSource.analyser);
-  new DynamicSpectrogram(audioSource, audioElement);
-  // gkheadCanvas();
-});
 
 export default {
   name: "App",
-  components: {},
+  components: {
+    Visualizations
+  },
   created() {
     // do nothing for now
   },
@@ -74,7 +59,6 @@ export default {
       if (message) {
         const node = document.createTextNode(`${message}\r\n`);
         output.appendChild(node);
-
         output.scrollTop = output.offsetHeight;
         console.log(message);
         return node;
