@@ -11,7 +11,7 @@ var options = {
 
 // Request server time
 
-const exec = async function () {
+export const exec = async function () {
 
     try {
         const time = await Sntp.time(options);
@@ -23,5 +23,3 @@ const exec = async function () {
         process.exit(1);
     }
 };
-
-exec();

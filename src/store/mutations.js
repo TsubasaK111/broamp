@@ -37,4 +37,7 @@ export const mutations = {
   broadcastPause(state) {
     state.audioPaused = true;
   },
+  setTime(state, datetime) {
+    state.time = datetime;
+  },
 }

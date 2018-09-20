@@ -7,8 +7,9 @@ import { OrbitDBPlugin } from "./shared_store/OrbitDbPlugin";
 
 import config from "./config";
 import { mutations } from "./store/mutations";
+import { actions } from "./store/mutations"
 
-// const ipfsRoom = new IpfsPlugin(config.ipfs);
+const ipfsRoom = new IpfsPlugin(config.ipfs);
 const vuexRoom = new RoomVuexPlugin(config.ipfs);
 const ipfsPlugin = new IpfsPlugin(config.ipfs);
 const orbitDbPlugin = new OrbitDBPlugin(config.ipfs);
@@ -37,5 +38,3 @@ const app = new Vue({
   store,
   render: (h) => h(App),
 });
-
-// roomManager(config.ipfs);
