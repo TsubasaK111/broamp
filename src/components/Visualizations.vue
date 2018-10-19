@@ -11,7 +11,7 @@ import VerticalFrequencyVis from "../visualizations/verticalFrequencyVis";
 import DynamicSpectrogram from "../visualizations/dynamicSpectrogram";
 
 export default {
-  name: "Description",
+  name: "Visualizations",
   methods: {
   }
 };

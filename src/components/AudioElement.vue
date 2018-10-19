@@ -1,56 +1,20 @@
 <template>
-<div id="dapp">
-  <div class="navBox">
-    <div class="logoBox">
-      <img class="logo" src="./assets/pong.svg">
-      <div class="logoText">BROAMP</div>
-    </div>
-    <div class="inputBox">
-      <label class="inputLabel">
-        <i class="fa fa-cloud-upload" /> select file
-        <input
-          id="fileInput"
-          type="file"
-          accept="audio/*"
-          @change="loadFile($event)"
-        />
-          <!-- @change="$store.dispatch('broadcastAudioSrc', $event)" -->
-      </label>
-    </div>
-  </div>
-
-  <div class="debug-box">
-    <h2>peers:</h2>
-    <div>{{$store.state.peers}}</div>
-    <h2>audioSrc:</h2>
-    <div>{{$store.state.audioSrc}}</div>
-    <h2>progress:</h2>
-    <div id="progress-output"></div>
-  </div>
-
-  <div class="inputBox">
-    <h2>controls:</h2>
-    <AudioElement />
-  </div>
-  <Visualizations />
-</div>
+  <audio
+    id="audioElement"
+    :src="$store.state.audioSrc"
+    :paused="$store.state.audioPaused"
+    :volume="$store.state.audioVolume"
+    controls=true
+    @canplaythrough="$store.dispatch('broadcastAudioStatus', 'canPlayThrough')"
+    @play="$store.dispatch('broadcastPlay')"
+    @pause="$store.dispatch('broadcastPause')"
+  >
+  </audio>
 </template>
 
 <script>
-import Visualizations from "./components/Visualizations";
-import AudioElement from "./components/AudioElement";
-
-import "./style.css";
-
 export default {
-  name: "App",
-  components: {
-    AudioElement,
-    Visualizations
-  },
-  created() {
-    // do nothing for now
-  },
+  name: "AudioElement",
   methods: {
     log: function(line) {
       const output = document.getElementById("progress-output");
@@ -126,7 +90,4 @@ export default {
 </script>
 
 <style>
-#app {
-  text-align: center;
-}
 </style>
