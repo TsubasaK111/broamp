@@ -14,6 +14,7 @@
           accept="audio/*"
           @change="loadFile($event)"
         />
+          <!-- @change="$store.dispatch('broadcastAudioSrc', $event)" -->
       </label>
     </div>
   </div>
@@ -35,9 +36,9 @@
       :paused="$store.state.audioPaused"
       :volume="$store.state.audioVolume"
       controls=true
-      @canplaythrough="$store.commit('updateAudioStatus', 'canPlayThrough')"
-      @play="$store.commit('broadcastPlay')"
-      @pause="$store.commit('broadcastPause')"
+      @canplaythrough="$store.dispatch('broadcastAudioStatus', 'canPlayThrough')"
+      @play="$store.dispatch('broadcastPlay')"
+      @pause="$store.dispatch('broadcastPause')"
     ></audio>
   </div>
   <Visualizations />
@@ -86,6 +87,7 @@ export default {
       const reader = new window.FileReader();
 
       reader.onload = event => {
+
         this.$ipfs.files
           .add(
             {
@@ -121,7 +123,7 @@ export default {
             return audioSrcUrl;
           })
           .then(audioSrcUrl => {
-            this.$store.commit("broadcastChange", audioSrcUrl);
+            this.$store.dispatch("broadcastAudioSrc", audioSrcUrl);
           });
       };
 

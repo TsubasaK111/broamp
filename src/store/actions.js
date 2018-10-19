@@ -3,6 +3,8 @@
 
 // const db = new OrbitDBMgr(config.ipfs);
 // console.log(db);
+
+
 export const actions = {
   recievePeerJoined(store, newPeer) {
     if (state.peers.includes(newPeer)) return;
@@ -32,17 +34,23 @@ export const actions = {
     state.audioPaused = true;
   },
 
+
   broadcastAudioSrc(store, newAudioSrc) {
-    state.audioSrc = newAudioSrc;
+    // loadFile(event);
+    store.commit("broadcastAudioSrc", newAudioSrc);
   },
-  broadcastAudioStatus(store, newAudioSrc) {
-    state.audioSrc = newAudioSrc;
+  broadcastAudioStatus(store, audioStatus) {
+    store.commit("broadcastAudioStatus");
   },
   broadcastPlay(store) {
-
-    state.audioPaused = false;
+    store.commit("broadcastPlay");
   },
   broadcastPause(store) {
-    state.audioPaused = true;
+    store.commit("broadcastPause");
   },
 }
+
+export const makeActions = (db) => {
+  console.log("db:", db);
+  return actions;
+};

@@ -25,16 +25,22 @@ export const mutations = {
   audioPause(state){
     state.audioPaused = true;
   },
-  broadcastChange(state, newAudioSrc){
-    console.log(`broadcastChange is trigged`)
+
+
+  broadcastAudioSrc(state, newAudioSrc){
     state.audioSrc = newAudioSrc;
+    console.log(`audioSrc has changed (broadcastAudioSrc)`);
+  },
+  broadcastAudioStatus(state, audioStatus) {
+    state.audioStatus = audioStatus;
   },
   broadcastPlay(state) {
     if (state.audioStatus !== 'canPlayThrough') throw Error('audio is not ready to play through, wait!')
-
     state.audioPaused = false;
+    console.log('broadcastPlayMttn');
   },
   broadcastPause(state) {
     state.audioPaused = true;
+    console.log('broadcastPauseMttn');
   },
 }
