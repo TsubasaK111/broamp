@@ -1,6 +1,8 @@
 import IPFS from 'ipfs'
 import OrbitDB from 'orbit-db'
 
+//  TODO: make this a Vuex plugin.
+
 const OrbitDBPlugin = async function (ipfsConfig) {
   console.log(ipfsConfig);
   this.config = ipfsConfig;

@@ -34,7 +34,7 @@ export const actions = {
     state.audioPaused = true;
   },
 
-
+  // NOTE: additional actions take place in OrbitDbVuexPlugin (planned)
   broadcastAudioSrc(store, newAudioSrc) {
     // loadFile(event);
     store.commit("broadcastAudioSrc", newAudioSrc);
