@@ -1,6 +1,7 @@
 import { OrbitDBMgr } from "../shared_store/OrbitDbMgr";
-
 import config from "../config";
+
+// TODO: utilize/invoke these actions in the OrbitDbVuexPlugin.
 
 const db = new OrbitDBMgr(config.ipfs);
 console.log(db);

@@ -1,10 +1,3 @@
-// import { OrbitDBMgr } from "../shared_store/OrbitDbMgr";
-// import config from "../config";
-
-// const db = new OrbitDBMgr(config.ipfs);
-// console.log(db);
-
-
 export const actions = {
   recievePeerJoined(store, newPeer) {
     if (state.peers.includes(newPeer)) return;
