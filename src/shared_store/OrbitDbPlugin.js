@@ -1,13 +1,7 @@
 import IPFS from 'ipfs'
 import OrbitDB from 'orbit-db'
 
-// const ipfsConfig = {
-//   EXPERIMENTAL: {
-//     pubsub: true
-//   }
-// }
-
-const OrbitDBPlugin = function (ipfsConfig) {
+const OrbitDBPlugin = async function (ipfsConfig) {
   console.log(ipfsConfig);
   this.config = ipfsConfig;
 
@@ -24,29 +18,26 @@ const OrbitDBPlugin = function (ipfsConfig) {
             // Create a database
             const orbitdb = new OrbitDB(ipfs)
 
-            const db = await orbitdb.docstore('obligatron.test')
+            const db = await orbitdb.keyvalue('broampSharedStore')
             resolve(db)
           })
         })
       }
 
       try {
-        const db = await createDB();
-
-        Vue.prototype.$orbit = {
-          get(query) {
-            return db.get(query);
-          },
-          put(doc) {
-            return db.put(doc);
-          },
-          query(queryFn) {
-            return db.query(queryFn);
-          },
-          onReplicated: async (callback) => {
-            return db.events.on('replicated', callback)
-          },
-        }
+        Vue.prototype.$orbit = await createDB();
+        // Vue.prototype.$orbit = db;
+        // Vue.prototype.$orbit = {
+        //   get(query) {
+        //     return db.get(query);
+        //   },
+        //   put(doc) {
+        //     return db.put(doc);
+        //   },
+        //   onReplicated: async (callback) => {
+        //     return db.events.on('replicated', callback)
+        //   },
+        // }
         console.log('OrbitDB installed ...')
       } catch (e) {
         console.log(e, 'Error installing orbit-db plugin...')

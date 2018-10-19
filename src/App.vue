@@ -1,6 +1,23 @@
 <template>
 <div id="dapp">
-  <h1> {{$store.state.title}} </h1>
+  <div class="navBox">
+    <div class="logoBox">
+      <img class="logo" src="./assets/pong.svg">
+      <div class="logoText">BROAMP</div>
+    </div>
+    <div class="inputBox">
+      <label class="inputLabel">
+        <i class="fa fa-cloud-upload" /> select file
+        <input
+          id="fileInput"
+          type="file"
+          accept="audio/*"
+          @change="loadFile($event)"
+        />
+      </label>
+    </div>
+  </div>
+
   <div class="debug-box">
     <h2>peers:</h2>
     <div>{{$store.state.peers}}</div>
@@ -10,13 +27,8 @@
     <div id="progress-output"></div>
   </div>
 
-
   <div class="inputBox">
     <h2>controls:</h2>
-    <label class="inputLabel">
-      <i class="fa fa-cloud-upload"></i> select file
-      <input id="fileInput" type="file" accept="audio/*" @change="loadFile($event)"/>
-    </label>
     <audio
       id="audioElement"
       :src="$store.state.audioSrc"
@@ -64,6 +76,7 @@ export default {
         return node;
       }
     },
+
     loadFile: function(event, options = {}) {
       const file = event.target.files[0];
       if (!file) throw Error("no file chosen");
@@ -90,6 +103,7 @@ export default {
           )
           .then(added => {
             const hash = added[0].hash;
+            // this.$orbit.put("audio", {src: $store.state.audioSrc})
             this.log(`IPFS: Added ${hash}`);
 
             // if audioEl.readyState = HAVE_ENOUGH_DATA	4

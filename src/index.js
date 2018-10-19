@@ -6,32 +6,34 @@ import { IpfsPlugin, RoomVuexPlugin } from "./shared_store";
 import { OrbitDBPlugin } from "./shared_store/OrbitDbPlugin";
 
 import config from "./config";
+import { actions } from "./store/actions";
 import { mutations } from "./store/mutations";
 
-const vuexRoom = new RoomVuexPlugin(config.ipfs);
-const ipfsPlugin = new IpfsPlugin(config.ipfs);
-const orbitDbPlugin = new OrbitDBPlugin(config.ipfs);
+// const vuexRoom = new RoomVuexPlugin(config.ipfs);
+// const ipfsPlugin = new IpfsPlugin(config.ipfs);
+// const orbitDbPlugin = new OrbitDBPlugin(config.ipfs);
 
-import "./audio/kessondalef.mp3";
+import "./assets/kessondalef.mp3";
 
 Vue.use(Vuex);
 // Vue.use(ipfsPlugin);
-Vue.use(orbitDbPlugin);
+// Vue.use(orbitDbPlugin);
+
+import { listen } from "./store/recievers";
 
 const store = new Vuex.Store({
   state: {
-    title: "IPFS PubSub x Vue x Vuex",
     ipfsStatus: "created",
     peers: [],
     messages: [],
-    audioSrc: "./audio/kessondalef.mp3",
+    audioSrc: "./assets/kessondalef.mp3",
     audioPaused: true,
     audioVolume: "0.7",
     audioStatus: "created",
-
   },
-  mutations: mutations,
-  plugins: [vuexRoom]
+  actions,
+  mutations,
+  // plugins: [vuexRoom]
 });
 
 const app = new Vue({
