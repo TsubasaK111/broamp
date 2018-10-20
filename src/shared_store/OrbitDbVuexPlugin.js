@@ -8,31 +8,33 @@ const createOrbitDBVuexPlugin = async function (ipfsConfig) {
   console.log('Installing OrbitDB ...')
 
   function createDB() {
-    new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       ipfs.on('error', e => reject(e))
       ipfs.on('ready', async () => {
         // Create a database
         const orbitdb = new OrbitDB(ipfs)
-
         const db = await orbitdb.keyvalue('broampSharedStore')
 
-        console.log(db)
-        resolve(db)
+        console.log("orbit db ready:", db);
+        resolve(db);
       })
     })
   }
 
   try {
     const db = await createDB();
-    console.log(db);
     return (store) => {
-      //   db.events.on('whatever', () => {
-      //  ... add recievers here
+
+      db.events.on('replicated', (address) => {
+        console.log('replicated');
+        console.log(address);
+      });
+
       store.subscribe(mutation => {
         switch (mutation.type) {
           case ('broadcastAudioSrc'):
-            console.log('broadcastAudioSrc subs');
-            console.log(mutation.payload);
+            console.log('broadcastAudioSrc subs', mutation.payload);
+            db.set('audioSrc', mutation.payload);
             return;
           case ('broadcastAudioStatus'):
             console.log('broadcastAudioStatus subs');
