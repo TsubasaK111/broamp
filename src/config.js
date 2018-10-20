@@ -3,7 +3,8 @@ const repo = () => 'ipfs/pubsub-demo/' + Math.random();
 
 const config = {
   ipfs: {
-    repo: repo(),
+    // repo: repo(),
+    repo: "ipfs/shared",
     EXPERIMENTAL: {
       pubsub: true,
     },

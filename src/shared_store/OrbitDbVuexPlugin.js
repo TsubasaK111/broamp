@@ -11,10 +11,15 @@ const createOrbitDBVuexPlugin = async function (ipfsConfig) {
     return new Promise((resolve, reject) => {
       ipfs.on('error', e => reject(e))
       ipfs.on('ready', async () => {
+        // NOTE: considering how we have swarm endpoints declared in config, 
+        // I really don't know why this is necessary.
+        // ipfs.swarm.connect('/ip4/198.46.197.197/tcp/4001/ipfs/QmdXiwDtfKsfnZ6RwEcovoWsdpyEybmmRpVDXmpm5cpk2s'); // Connect to ipfs.p2pvps.net
+        ipfs.swarm.connect('/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star');
+        
         // Create a database
         const orbitdb = new OrbitDB(ipfs)
-        const db = await orbitdb.keyvalue('broampSharedStore')
-
+        const db = await orbitdb.keyvalue('broampSharedStore', { write: ['*'] })
+        await db.load()
         console.log("orbit db ready:", db);
         resolve(db);
       })
@@ -26,8 +31,7 @@ const createOrbitDBVuexPlugin = async function (ipfsConfig) {
     return (store) => {
 
       db.events.on('replicated', (address) => {
-        console.log('replicated');
-        console.log(address);
+        console.log(`DB just replicated with peer ${address}.`)
         const audioSrc = db.get('audioSrc');
         console.log(audioSrc);
       });
