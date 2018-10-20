@@ -28,7 +28,13 @@ const createOrbitDBVuexPlugin = async function (ipfsConfig) {
       db.events.on('replicated', (address) => {
         console.log('replicated');
         console.log(address);
+        const audioSrc = db.get('audioSrc');
+        console.log(audioSrc);
       });
+
+      db.events.on('write', (dbname, hash, entry) => {
+        console.log(dbname, hash, entry);
+      })
 
       store.subscribe(mutation => {
         switch (mutation.type) {
@@ -38,15 +44,18 @@ const createOrbitDBVuexPlugin = async function (ipfsConfig) {
             return;
           case ('broadcastAudioStatus'):
             console.log('broadcastAudioStatus subs');
+            db.set('audioStatus', mutation.payload);
             return;
           case ('broadcastPlay'):
             console.log('broadcastPlay subs');
+            db.set('audioPaused', false);
             return;
           case ('broadcastPause'):
             console.log('broadcastPause subs');
+            db.set('audioPaused', true);
             return;
           default:
-            // do nothing.
+          // do nothing.
         }
       });
     }
