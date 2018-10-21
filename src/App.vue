@@ -1,42 +1,53 @@
 <template>
-  <div id="dapp">
-    <h1> {{$store.state.title}} </h1>
-    <div class="debug-box">
-      <h2>peers:</h2>
-      <div>{{$store.state.peers}}</div>
-      <h2>audioSrc:</h2>
-      <div>{{$store.state.audioSrc}}</div>
-      <h2>progress:</h2>
-      <div id="progress-output"></div>
+<div id="dapp">
+  <div class="navBox">
+    <div class="logoBox">
+      <img class="logo" src="./assets/pong.svg">
+      <div class="logoText">BROAMP</div>
     </div>
-
-
     <div class="inputBox">
-      <h2>controls:</h2>
       <label class="inputLabel">
-        <i class="fa fa-cloud-upload"></i> select file
-        <input id="fileInput" type="file" accept="audio/*" @change="loadFile($event)"/>
+        <i class="fa fa-cloud-upload" /> select file
+        <input
+          id="fileInput"
+          type="file"
+          accept="audio/*"
+          @change="loadFile($event)"
+        />
+          <!-- @change="$store.dispatch('broadcastAudioSrc', $event)" -->
       </label>
-      <audio
-        id="audioElement"
-        :src="$store.state.audioSrc"
-        :paused="$store.state.audioPaused"
-        :volume="$store.state.audioVolume"
-        controls=true
-        @canplaythrough="$store.commit('updateAudioStatus', 'canPlayThrough')"
-        @play="$store.commit('broadcastPlay')"
-        @pause="$store.commit('broadcastPause')"
-      ></audio>
     </div>
   </div>
+
+  <div class="debug-box">
+    <h2>peers:</h2>
+    <div>{{$store.state.peers}}</div>
+    <h2>audioSrc:</h2>
+    <div>{{$store.state.audioSrc}}</div>
+    <h2>progress:</h2>
+    <div id="progress-output"></div>
+  </div>
+
+  <div class="inputBox">
+    <h2>controls:</h2>
+    <AudioElement />
+  </div>
+  <Visualizations />
+</div>
 </template>
 
 <script>
+import Visualizations from "./components/Visualizations";
+import AudioElement from "./components/AudioElement";
+
 import "./style.css";
 
 export default {
   name: "App",
-  components: {},
+  components: {
+    AudioElement,
+    Visualizations
+  },
   created() {
     // do nothing for now
   },
@@ -54,12 +65,12 @@ export default {
       if (message) {
         const node = document.createTextNode(`${message}\r\n`);
         output.appendChild(node);
-
         output.scrollTop = output.offsetHeight;
         console.log(message);
         return node;
       }
     },
+
     loadFile: function(event, options = {}) {
       const file = event.target.files[0];
       if (!file) throw Error("no file chosen");
@@ -78,7 +89,7 @@ export default {
             {
               progress: addedBytes => {
                 progress.textContent = `IPFS: Adding ${file.name} ${parseInt(
-                  addedBytes / file.size * 100
+                  (addedBytes / file.size) * 100
                 )}%\r\n`;
                 this.log(progress.textContent);
               }
@@ -86,6 +97,7 @@ export default {
           )
           .then(added => {
             const hash = added[0].hash;
+            // this.$orbit.put("audio", {src: $store.state.audioSrc})
             this.log(`IPFS: Added ${hash}`);
 
             // if audioEl.readyState = HAVE_ENOUGH_DATA	4
@@ -103,7 +115,7 @@ export default {
             return audioSrcUrl;
           })
           .then(audioSrcUrl => {
-            this.$store.commit("broadcastChange", audioSrcUrl);
+            this.$store.dispatch("broadcastAudioSrc", audioSrcUrl);
           });
       };
 

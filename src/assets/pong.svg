@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="auto" height="50px" viewBox="0 0 258 265" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50 (54983) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 5</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M0.281939186,0.776647544 L119.614974,0.776647544 L103.820146,133.252413 C103.173661,138.674669 98.9478428,142.976723 93.5380112,143.720042 C78.0088552,145.85377 67.5109193,146.920634 62.0442034,146.920634 C56.5771876,146.920634 45.2411396,145.961894 28.0360593,144.044414 L28.0360591,144.044415 C22.0538202,143.377704 17.311617,138.691447 16.5739609,132.717541 L0.281939186,0.776647544 Z" id="path-1"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-5" transform="translate(0.000000, 5.000000)">
+            <rect id="Rectangle-9" stroke="#000000" stroke-width="10" transform="translate(128.750000, 130.646970) rotate(-45.000000) translate(-128.750000, -130.646970) " x="43.3131855" y="44.003788" width="170.873629" height="173.286363"></rect>
+            <g id="selfmadeCup" transform="translate(120.241634, 130.067203) rotate(17.000000) translate(-120.241634, -130.067203) translate(47.741634, 38.067203)">
+                <path d="M6.6999428,19.7174861 L25.615093,170.710911 C26.1164901,174.7134 29.5192788,177.716512 33.5530506,177.716512 L112.529645,177.716512 C116.059195,177.716512 119.036635,175.088789 119.475358,171.586611 L138.500208,19.7174861 L6.6999428,19.7174861 Z" id="Rectangle-10" stroke="#000000" stroke-width="10"></path>
+                <ellipse id="Oval" stroke="#000000" stroke-width="13" fill="#FFFFFF" cx="73.6448281" cy="174.856909" rx="47.5362537" ry="8.84205401"></ellipse>
+                <g id="Group-4" transform="translate(13.046652, 32.209479)">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="Rectangle-10" fill="#FFFFFF" xlink:href="#path-1"></use>
+                    <rect id="Rectangle-11" fill="#FFCA71" mask="url(#mask-2)" x="-23.7514079" y="-27.579196" width="116.959036" height="191.256855"></rect>
+                    <polygon id="Rectangle-11" fill="#FF8600" mask="url(#mask-2)" points="86.1612422 -8.6185118 134.744482 -13.3366642 134.744482 163.677659 56.6401571 158.472624"></polygon>
+                </g>
+                <ellipse id="Oval" stroke="#000000" stroke-width="5" fill="#FFFFFF" cx="73.2282176" cy="22.0689706" rx="71.0431924" ry="13.263081"></ellipse>
+                <ellipse id="Oval" stroke="#000000" stroke-width="10" fill="#FFFFFF" cx="72.3838046" cy="13.2737394" rx="71.5655688" ry="13.263081"></ellipse>
+            </g>
+            <circle id="Oval-2" stroke="#000000" stroke-width="10" fill="#FFFFFF" cx="170.5" cy="30.5" r="30.5"></circle>
+        </g>
+    </g>
+</svg>

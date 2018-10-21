@@ -2,74 +2,47 @@ import Vue from "vue";
 import Vuex from "vuex";
 import App from "./App.vue";
 
-import { IpfsPlugin, RoomVuexPlugin } from "./rooms";
+import { IpfsPlugin, RoomVuexPlugin } from "./shared_store";
+// import { OrbitDBPlugin } from "./shared_store/OrbitDbPlugin";
+import { createOrbitDBVuexPlugin } from "./shared_store/OrbitDbVuexPlugin";
+
 import config from "./config";
-import './audio/Odesza-Above_The_Middle.mp3';
+import { actions } from "./store/actions";
+import { mutations } from "./store/mutations";
+import "./assets/kessondalef.mp3";
 
-// const ipfsRoom = new IpfsPlugin(config.ipfs);
-const vuexRoom = new RoomVuexPlugin(config.ipfs);
-const ipfsPlugin = new IpfsPlugin(config.ipfs);
+const setupVue = async () => {
+  // const vuexRoom = new RoomVuexPlugin(config.ipfs);
+  const ipfsPlugin = new IpfsPlugin(config.ipfs);
+  // const orbitDbPlugin = new OrbitDBPlugin(config.ipfs);
+  const orbitDbVuexPlugin = await new createOrbitDBVuexPlugin(config.ipfs);
 
-Vue.use(Vuex);
-Vue.use(ipfsPlugin);
 
-const store = new Vuex.Store({
-  state: {
-    title: "IPFS PubSub x Vue x Vuex",
-    ipfsStatus: "created",
-    peers: [],
-    messages: [],
-    audioSrc: "./audio/Odesza-Above_The_Middle.mp3",
-    audioPaused: true,
-    audioVolume: "0.7",
-    audioStatus: "created",
-  },
-  mutations: {
-    ipfsConnection(state, newStatus) {
-      state.ipfsStatus = newStatus;
-    },
-    peerJoined(state, newPeer) {
-      if (state.peers.includes(newPeer)) return;
-      state.peers.push(newPeer);
-    },
-    peerLeft(state, leftPeer) {
-      state.peers = state.peers.filter(peer => peer !== leftPeer);
-    },
-    addMessage(state, newMessage) {
-      state.messages.push(newMessage);
-    },
-    updateAudioSrc(state, newAudioSrc) {
-      state.audioSrc = newAudioSrc;
-    },
-    updateAudioStatus(state, newAudioStatus) {
-      state.audioStatus = newAudioStatus;
-    },
-    audioPlay(state){
-      state.audioPaused = false;
-    },
-    audioPause(state){
-      state.audioPaused = true;
-    },
-    broadcastChange(state, newAudioSrc){
-      console.log(`broadcastChange is trigged`)
-      state.audioSrc = newAudioSrc;
-    },
-    broadcastPlay(state) {
-      if (state.audioStatus !== 'canPlayThrough') throw Error('audio is not ready to play through, wait!')
+  Vue.use(Vuex);
+  Vue.use(ipfsPlugin);
+  // Vue.use(orbitDbPlugin);
 
-      state.audioPaused = false;
+  const store = new Vuex.Store({
+    state: {
+      ipfsStatus: "created",
+      peers: [],
+      messages: [],
+      audioSrc: "./assets/kessondalef.mp3",
+      audioPaused: true,
+      audioVolume: "0.7",
+      audioStatus: "created",
     },
-    broadcastPause(state) {
-      state.audioPaused = true;
-    },
-  },
-  plugins: [vuexRoom]
-});
+    actions,
+    mutations,
+    plugins: [orbitDbVuexPlugin]
+    // plugins: [vuexRoom]
+  });
 
-const app = new Vue({
-  el: "#app",
-  store,
-  render: (h) => h(App),
-});
+  const app = new Vue({
+    el: "#app",
+    store,
+    render: (h) => h(App),
+  });
+}
 
-// roomManager(config.ipfs);
+setupVue();
