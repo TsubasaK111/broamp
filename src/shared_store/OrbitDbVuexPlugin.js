@@ -11,16 +11,17 @@ const createOrbitDBVuexPlugin = async function (ipfsConfig) {
     return new Promise((resolve, reject) => {
       ipfs.on('error', e => reject(e))
       ipfs.on('ready', async () => {
-        // NOTE: considering how we have swarm endpoints declared in config, 
-        // I really don't know why this is necessary.
-        // ipfs.swarm.connect('/ip4/198.46.197.197/tcp/4001/ipfs/QmdXiwDtfKsfnZ6RwEcovoWsdpyEybmmRpVDXmpm5cpk2s'); // Connect to ipfs.p2pvps.net
-        ipfs.swarm.connect('/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star');
-        
+
         // Create a database
-        const orbitdb = new OrbitDB(ipfs)
-        const db = await orbitdb.keyvalue('broampSharedStore', { write: ['*'] })
-        await db.load()
-        console.log("orbit db ready:", db);
+        const orbitdb = new OrbitDB(ipfs);
+        const accessRights = {
+          // give access to everyone
+          write: ['*'],
+        };
+        const db = await orbitdb.keyvalue('broampSharedStore', accessRights);
+
+        await db.load();
+        console.log("orbit db ready! address:", db.address.toString());
         resolve(db);
       })
     })
@@ -32,50 +33,64 @@ const createOrbitDBVuexPlugin = async function (ipfsConfig) {
 
       db.events.on('replicated', (address) => {
         console.log(`DB just replicated with peer ${address}.`)
-        const audioSrc = db.get('audioSrc');
-        console.log(audioSrc);
+        const newState = {
+          audioSrc: db.get('audioSrc'),
+          audioStatus: db.get('audioStatus'),
+          audioPaused: db.get('audioPaused'),
+        }
+        console.log('store.state', store.state);
+        console.log('newstate:', newState);
+
+        Object.entries(newState).forEach(([key, value]) => {
+          if (value !== store.state[key] && value !== undefined) {
+            console.log(`newstate detected:`, value, store.state[key], value === store.state[key]);
+            switch (key) {
+              case ('audioSrc'):
+                store.dispatch("recieveAudioSrc", value);
+                return;
+              case ('audioStatus'):
+                console.log('recieveAudioStatus. audioStatus:', value)
+                store.dispatch("recieveAudioStatus", value);
+                return;
+              case ('audioPaused'):
+                value ?
+                  store.dispatch("recieveAudioPause") :
+                  store.dispatch("recieveAudioPlay");
+                return;
+              default:
+                // do nothing.              
+            }
+          }
+        });
       });
 
       db.events.on('write', (dbname, hash, entry) => {
-        console.log(dbname, hash, entry);
+        console.log('write triggered');
       })
 
       store.subscribe(mutation => {
         switch (mutation.type) {
           case ('broadcastAudioSrc'):
             console.log('broadcastAudioSrc subs', mutation.payload);
-            db.set('audioSrc', mutation.payload);
+            db.put('audioSrc', mutation.payload);
             return;
           case ('broadcastAudioStatus'):
-            console.log('broadcastAudioStatus subs');
-            db.set('audioStatus', mutation.payload);
+            console.log('broadcastAudioStatus subs. audioStatus:', mutation.payload);
+            db.put('audioStatus', mutation.payload);
             return;
-          case ('broadcastPlay'):
-            console.log('broadcastPlay subs');
-            db.set('audioPaused', false);
+          case ('broadcastAudioPlay'):
+            db.put('audioPaused', false);
             return;
-          case ('broadcastPause'):
-            console.log('broadcastPause subs');
-            db.set('audioPaused', true);
+          case ('broadcastAudioPause'):
+            db.put('audioPaused', true);
             return;
           default:
           // do nothing.
         }
       });
     }
-    console.log('OrbitDB installed ...')
+    console.log('OrbitDB installed!')
 
-    // return {
-    //   get(query) {
-    //     return db.get(query);
-    //   },
-    //   put(doc) {
-    //     return db.put(doc);
-    //   },
-    //   onReplicated: async (callback) => {
-    //     return db.events.on('replicated', callback)
-    //   },
-    // }
   } catch (e) {
     console.log(e, 'Error installing orbit-db plugin...')
   }

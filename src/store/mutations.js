@@ -1,46 +1,46 @@
 
 export const mutations = {
-  ipfsConnection(state, newStatus) {
-    state.ipfsStatus = newStatus;
-  },
-  peerJoined(state, newPeer) {
-    if (state.peers.includes(newPeer)) return;
-    state.peers.push(newPeer);
-  },
-  peerLeft(state, leftPeer) {
-    state.peers = state.peers.filter(peer => peer !== leftPeer);
-  },
-  addMessage(state, newMessage) {
-    state.messages.push(newMessage);
-  },
-  updateAudioSrc(state, newAudioSrc) {
+  recieveAudioSrc(state, newAudioSrc) {
+    console.log('recieveAudioSrc mttn');
     state.audioSrc = newAudioSrc;
+    console.log(`audioSrc has changed (updateAudioSrc)`);
   },
-  updateAudioStatus(state, newAudioStatus) {
-    state.audioStatus = newAudioStatus;
+  recieveAudioStatus(state, newAudioStatus) {
+    console.log('recieveAudioStatus mttn');
+    if (newAudioStatus !== undefined) {
+      state.audioStatus = newAudioStatus;
+    }
   },
-  audioPlay(state){
+  recieveAudioPlay(state) {
+    console.log('recieveAudioPlay mttn');
+    if (state.audioStatus !== 'canPlayThrough') {
+      throw Error(`audio is not ready to play through. audioStatus: ${state.audioStatus}`);
+    }
     state.audioPaused = false;
   },
-  audioPause(state){
+  recieveAudioPause(state) {
+    console.log('recieveAudioPause mttn');
     state.audioPaused = true;
   },
 
 
-  broadcastAudioSrc(state, newAudioSrc){
+  broadcastAudioSrc(state, newAudioSrc) {
     state.audioSrc = newAudioSrc;
     console.log(`audioSrc has changed (broadcastAudioSrc)`);
   },
-  broadcastAudioStatus(state, audioStatus) {
-    state.audioStatus = audioStatus;
+  broadcastAudioStatus(state, newAudioStatus) {
+    if (newAudioStatus !== undefined) {
+      state.audioStatus = newAudioStatus;
+    }
   },
-  broadcastPlay(state) {
-    if (state.audioStatus !== 'canPlayThrough') throw Error('audio is not ready to play through, wait!')
+  broadcastAudioPlay(state) {
+    if (state.audioStatus !== 'canPlayThrough') {
+      throw Error(`audio is not ready to play through. audioStatus: ${state.audioStatus}`);
+    }
     state.audioPaused = false;
-    console.log('broadcastPlayMttn');
   },
-  broadcastPause(state) {
+  broadcastAudioPause(state) {
+    console.log('audioPause');
     state.audioPaused = true;
-    console.log('broadcastPauseMttn');
   },
 }

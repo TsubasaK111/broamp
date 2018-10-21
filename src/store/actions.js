@@ -1,45 +1,35 @@
 export const actions = {
-  recievePeerJoined(store, newPeer) {
-    if (state.peers.includes(newPeer)) return;
-    state.peers.push(newPeer);
-  },
-  recievePeerLeft(store, leftPeer) {
-    state.peers = state.peers.filter(peer => peer !== leftPeer);
-  },
-  // broadCastPeerJoined(store, newPeer) {
-  //   if (state.peers.includes(newPeer)) return;
-  //   state.peers.push(newPeer);
-  // },
-  // broadCastPeerLeft(store, leftPeer) {
-  //   state.peers = state.peers.filter(peer => peer !== leftPeer);
-  // },
-
   recieveAudioSrc(store, newAudioSrc) {
-    state.audioSrc = newAudioSrc;
+    // loadFile(event);
+    store.commit("recieveAudioSrc", newAudioSrc);
   },
   recieveAudioStatus(store, newAudioStatus) {
-    state.audioStatus = newAudioStatus;
+    store.commit("recieveAudioStatus", newAudioStatus);
   },
   recieveAudioPlay(store) {
-    state.audioPaused = false;
+    const audioEl = document.getElementById("audioElement");
+    audioEl.play();
+    store.commit("recieveAudioPlay");
   },
   recieveAudioPause(store) {
-    state.audioPaused = true;
+    const audioEl = document.getElementById("audioElement");
+    audioEl.pause();
+    store.commit("recieveAudioPause");
   },
 
-  // NOTE: additional actions take place in OrbitDbVuexPlugin (planned)
+  // NOTE: additional actions take place in OrbitDbVuexPlugin
   broadcastAudioSrc(store, newAudioSrc) {
     // loadFile(event);
     store.commit("broadcastAudioSrc", newAudioSrc);
   },
-  broadcastAudioStatus(store, audioStatus) {
-    store.commit("broadcastAudioStatus");
+  broadcastAudioStatus(store, newAudioStatus) {
+    store.commit("broadcastAudioStatus", newAudioStatus);
   },
   broadcastPlay(store) {
-    store.commit("broadcastPlay");
+    store.commit("broadcastAudioPlay");
   },
   broadcastPause(store) {
-    store.commit("broadcastPause");
+    store.commit("broadcastAudioPause");
   },
 }
 
