@@ -19,10 +19,10 @@ export default {
   name: "AudioElement",
   methods: {
     play: function(){
-      this.$store.dispatch('boradcastAudioPlay');
+      this.$store.dispatch('broadcastAudioPlay');
     },
     pause: function(){
-      this.$store.dispatch('boradcastAudioPause');
+      this.$store.dispatch('broadcastAudioPause');
     }
   }
 };
