@@ -1,4 +1,27 @@
+// var Sntp = require('sntp');
+
 export const actions = {
+  // syncClock(store) {
+  //   // All options are optional
+
+  //   var options = {
+  //     host: 'nist1-sj.ustiming.org',  // Defaults to pool.ntp.org
+  //     port: 123,                      // Defaults to 123 (NTP)
+  //     resolveReference: true,         // Default to false (not resolving)
+  //     timeout: 1000                   // Defaults to zero (no timeout)
+  //   };
+
+  //   // Request server time
+  //   Sntp.time(options, function (err, time) {
+  //     if (err) {
+  //       console.log('Failed: ' + err.message);
+  //       process.exit(1);
+  //     }
+
+  //     console.log('Local clock is off by: ' + time.t + ' milliseconds');
+  //     process.exit(0);
+  //   });
+  // },
   recieveAudioSrc(store, newAudioSrc) {
     // loadFile(event);
     store.commit("recieveAudioSrc", newAudioSrc);
@@ -10,11 +33,13 @@ export const actions = {
     const audioEl = document.getElementById("audioElement");
     audioEl.play();
     store.commit("recieveAudioPlay");
+    // .fastSeek()
   },
   recieveAudioPause(store) {
     const audioEl = document.getElementById("audioElement");
     audioEl.pause();
     store.commit("recieveAudioPause");
+    // .fastSeek()
   },
 
   // NOTE: additional actions take place in OrbitDbVuexPlugin
@@ -25,10 +50,11 @@ export const actions = {
   broadcastAudioStatus(store, newAudioStatus) {
     store.commit("broadcastAudioStatus", newAudioStatus);
   },
-  broadcastPlay(store) {
+  broadcastAudioPlay(store) {
     store.commit("broadcastAudioPlay");
+    
   },
-  broadcastPause(store) {
+  broadcastAudioPause(store) {
     store.commit("broadcastAudioPause");
   },
 }
