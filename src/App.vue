@@ -24,6 +24,10 @@
     <div>{{$store.state.peers}}</div>
     <h2>audioSrc:</h2>
     <div>{{$store.state.audioSrc}}</div>
+    <h2>audioStatus:</h2>
+    <div>{{$store.state.audioStatus}}</div>
+    <h2>groupAudioStatus:</h2>
+    <div>{{$store.state.groupAudioStatus}}</div>
     <h2>progress:</h2>
     <div id="progress-output"></div>
   </div>

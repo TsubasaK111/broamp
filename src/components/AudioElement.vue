@@ -7,9 +7,13 @@
     :currentTime="$store.state.currentTime"
     controls=true
     @canplaythrough="$store.dispatch('broadcastAudioStatus', 'canPlayThrough')"
+    @waiting="$store.dispatch('broadcastAudioStatus', 'waiting')"
+    @playing="$store.dispatch('broadcastAudioStatus', 'playing')"
+    @emptied="$store.dispatch('broadcastAudioStatus', 'emptied')"
     @play="play()"
     @pause="pause()"
   >
+  <!-- crossOrigin="anonymous" -->
   <!-- TODO: broadCastAudioStatus needs to be made irrelevant. -->
   </audio>
 </template>

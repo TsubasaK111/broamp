@@ -8,7 +8,7 @@ export const mutations = {
   recieveAudioStatus(state, newAudioStatus) {
     console.log('recieveAudioStatus mttn');
     if (newAudioStatus !== undefined) {
-      state.audioStatus = newAudioStatus;
+      state.groupAudioStatus = newAudioStatus;
     }
   },
   recieveAudioPlay(state) {
@@ -22,7 +22,6 @@ export const mutations = {
     console.log('recieveAudioPause mttn');
     state.audioPaused = true;
   },
-
 
   broadcastAudioSrc(state, newAudioSrc) {
     state.audioSrc = newAudioSrc;

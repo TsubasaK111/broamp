@@ -9,7 +9,7 @@ const createOrbitDBVuexPlugin = async function (ipfsConfig) {
 
   function createDB() {
     return new Promise((resolve, reject) => {
-      ipfs.on('error', e => reject(e))
+      ipfs.on('error', e => reject(e));
       ipfs.on('ready', async () => {
 
         // Create a database
@@ -23,14 +23,14 @@ const createOrbitDBVuexPlugin = async function (ipfsConfig) {
         await db.load();
         console.log("orbit db ready! address:", db.address.toString());
         resolve(db);
-      })
-    })
+      });
+    });
   }
 
   try {
     const db = await createDB();
+    db.put('audioStatus', store.state.audioStatus);
     return (store) => {
-
       db.events.on('replicated', (address) => {
         console.log(`DB just replicated with peer ${address}.`)
         const newState = {
@@ -66,6 +66,7 @@ const createOrbitDBVuexPlugin = async function (ipfsConfig) {
 
       db.events.on('write', (dbname, hash, entry) => {
         console.log('write triggered');
+        console.log(dbname, hash, entry);
       })
 
       store.subscribe(mutation => {

@@ -26,8 +26,8 @@ export const actions = {
     // loadFile(event);
     store.commit("recieveAudioSrc", newAudioSrc);
   },
-  recieveAudioStatus(store, newAudioStatus) {
-    store.commit("recieveAudioStatus", newAudioStatus);
+  recieveAudioStatus(store, newGroupAudioStatus) {
+    store.commit("recieveAudioStatus", newGroupAudioStatus);
   },
   recieveAudioPlay(store) {
     const audioEl = document.getElementById("audioElement");

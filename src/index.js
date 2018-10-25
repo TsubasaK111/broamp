@@ -31,6 +31,7 @@ const setupVue = async () => {
       audioPaused: true,
       audioVolume: "0.7",
       audioStatus: "created",
+      groupAudioStatus: "initialized"
     },
     actions,
     mutations,
