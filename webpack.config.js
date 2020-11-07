@@ -2,16 +2,18 @@
 
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const { VueLoaderPlugin } = require('vue-loader');
+const TerserPlugin = require('terser-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
+
+var nodeExternals = require('webpack-node-externals');
 
 module.exports = {
   devtool: 'source-map',
   // devtool: 'inline-cheap-module-source-map',
   entry: [
-    'babel-polyfill',
     './src/index.js'
   ],
+  target: 'node',
   module: {
     rules: [
       {
@@ -19,8 +21,7 @@ module.exports = {
         include: path.join(__dirname, 'src'),
         loader: 'babel-loader',
         options: {
-          presets: ['babel-preset-env'],
-          plugins: [require('babel-plugin-transform-object-rest-spread')],
+          presets: ['@babel/preset-env'],
         }
       },
       {
@@ -42,25 +43,29 @@ module.exports = {
       },
     ]
   },
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin()],
+  },
+  devServer: {
+    publicPath: '/public'
+  },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'src/index.html'
-    }),
-    new UglifyJsPlugin({
-      sourceMap: true,
-      uglifyOptions: {
-        mangle: false,
-        compress: false
-      }
+      template: 'src/index.html',
+      minify: false,
     }),
     new VueLoaderPlugin(),
   ],
   resolve: {
     alias: {
       vue$: "vue/dist/vue.esm.js",
+      util: "util",
     },
     extensions: ["*", ".js", ".vue", ".json"],
+    // fallback: { "util": require.resolve("util/") }
   },
+  externals: [nodeExternals()], // in order to ignore all modules in node_modules folder
   output: {
     path: path.join(__dirname, 'public'),
     filename: 'bundle.js'

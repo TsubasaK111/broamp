@@ -1,5 +1,5 @@
-const IPFS = require('ipfs');
-const Room = require('ipfs-pubsub-room');
+import IPFS from 'ipfs';
+import * as Room from 'ipfs-pubsub-room';
 
 const IpfsPlugin = function (ipfsConfig) {
   this.config = ipfsConfig;

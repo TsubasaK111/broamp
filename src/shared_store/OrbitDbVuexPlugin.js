@@ -5,7 +5,7 @@ const createOrbitDBVuexPlugin = async function (ipfsConfig) {
   this.config = ipfsConfig;
 
   const ipfs = new IPFS({ ...ipfsConfig });
-  console.log('Installing OrbitDB ...')
+  console.log('Installing OrbitDB ...');
 
   function createDB() {
     return new Promise((resolve, reject) => {
