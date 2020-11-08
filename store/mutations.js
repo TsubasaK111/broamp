@@ -1,5 +1,5 @@
 
-export const mutations = {
+export default {
   recieveAudioSrc(state, newAudioSrc) {
     console.log('recieveAudioSrc mttn');
     state.audioSrc = newAudioSrc;

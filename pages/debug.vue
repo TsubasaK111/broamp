@@ -1,10 +1,5 @@
 <template>
-<div id="dapp">
-  <div class="navBox">
-    <div class="logoBox">
-      <img class="logo" src="./assets/pong.svg">
-      <div class="logoText">BROAMP</div>
-    </div>
+<div class="debug">
     <div class="inputBox">
       <label class="inputLabel">
         <i class="fa fa-cloud-upload" /> select file
@@ -16,7 +11,6 @@
         />
           <!-- @change="$store.dispatch('broadcastAudioSrc', $event)" -->
       </label>
-    </div>
   </div>
 
   <div class="debug-box">
@@ -37,17 +31,8 @@
 </template>
 
 <script>
-import Visualizations from "./components/Visualizations";
-import AudioElement from "./components/AudioElement";
-
-import "./style.css";
-
 export default {
-  name: "App",
-  components: {
-    AudioElement,
-    Visualizations
-  },
+  name: "debug",
   created() {
     // do nothing for now
   },
@@ -126,6 +111,9 @@ export default {
 </script>
 
 <style>
+.debug {
+  height: 100%;
+}
 #app {
   text-align: center;
 }

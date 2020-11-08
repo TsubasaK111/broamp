@@ -29,6 +29,7 @@ const createOrbitDBVuexPlugin = async function (ipfsConfig) {
 
   try {
     const db = await createDB();
+    console.log('OrbitDB installed!')
     return (store) => {
 
       db.events.on('replicated', (address) => {
@@ -85,11 +86,10 @@ const createOrbitDBVuexPlugin = async function (ipfsConfig) {
             db.put('audioPaused', true);
             return;
           default:
-          // do nothing.
+            // do nothing.
         }
       });
     }
-    console.log('OrbitDB installed!')
 
   } catch (e) {
     console.log(e, 'Error installing orbit-db plugin...')

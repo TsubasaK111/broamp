@@ -6,15 +6,11 @@
       aria-label="main navigation"
     >
       <div class="navbar-brand">
-        <a
-          class="navbar-item"
-          href="/"
-        >
-          <img
-            src="~assets/buefy.png"
-            alt="Buefy"
-            height="28"
-          >
+        <a class="navbar-item" href="/">
+          <div class="logoBox">
+            <img class="logo" src="~/assets/pong.svg" />
+            <div class="logoText">BROAMP</div>
+          </div>
         </a>
 
         <div class="navbar-burger">
