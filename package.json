@@ -1,19 +1,24 @@
 {
   "name": "broamp",
-  "version": "1.0.0",
-  "private": true,
+  "version": "0.3.0",
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
-    "test": "jest"
+    "test": "jest",
+    "heroku-postbuild": "yarn build"
   },
   "dependencies": {
     "@nuxtjs/pwa": "^3.0.2",
     "core-js": "^3.6.5",
     "nuxt": "^2.14.6",
-    "nuxt-buefy": "^0.4.3"
+    "nuxt-buefy": "^0.4.3",
+    "chroma-js": "^2.1.0",
+    "d3": "^6.2.0",
+    "ipfs": "^0.51.0",
+    "ipfs-pubsub-room": "^2.0.1",
+    "orbit-db": "^0.26.0"
   },
   "devDependencies": {
     "@vue/test-utils": "^1.1.0",
