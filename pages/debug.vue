@@ -64,8 +64,6 @@ export default {
       const progress = this.log(`IPFS: Adding ${file.name} 0%`)
       const reader = new window.FileReader()
 
-      console.log("this.$ipfs", this.$ipfs);
-
       reader.onload = (event) => {
         const fileObject = {
           path: file.name,
@@ -79,12 +77,13 @@ export default {
             this.log(progress.textContent)
           },
         }
+
         this.$ipfs
           .add(fileObject, options)
           .then((added) => {
-            const hash = added[0].hash
+            const cid = added.cid.string
             // this.$orbit.put("audio", {src: $store.state.audioSrc})
-            this.log(`IPFS: Added ${hash}`)
+            this.log(`IPFS: Added ${cid}`)
 
             // if audioEl.readyState = HAVE_ENOUGH_DATA	4
 
@@ -93,10 +92,10 @@ export default {
             // const fileURL = URL.createObjectURL(file);
             // console.this.log(fileURL);
             // window.open(fileURL);
-            // window.open(added[0].path);
+            // window.open(added.path);
 
-            const audioSrcUrl = `https://ipfs.io/ipfs/${added[0].hash}`
-            this.log(`sourceUrl: audioSrcUrl`)
+            const audioSrcUrl = `https://ipfs.io/ipfs/${cid}`
+            this.log(`audioSrcUrl: ${audioSrcUrl}`)
 
             return audioSrcUrl
           })
