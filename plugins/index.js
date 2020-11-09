@@ -1,36 +1,17 @@
-import IPFS from 'ipfs';
+import IPFS from 'ipfs-core'
 import * as Room from 'ipfs-pubsub-room';
 
-const IpfsPlugin = function (ipfsConfig) {
-  this.config = ipfsConfig;
-
-  return {
-    install: async (Vue, ipfsConfig, state) => {
-      new Promise((resolve, reject) => {
-        const ipfs = new IPFS({ ...this.config });
-
-        ipfs.on('ready', () => {
-          ipfs.id((err, info) => {
-            if (err) reject(err);
-            console.log('IPFS node ready with address ', info.id);
-            resolve(ipfs);
-          });
-        });
-      })
-        .then(ipfs => {
-          Vue.prototype.$ipfs = ipfs;
-          Vue.prototype.$room
-        });
-    }
-  }
-}
+import config from "~/config";
+import Vue from "vue";
+// import { OrbitDBPlugin } from "./shared_store/OrbitDbPlugin";
+import OrbitDBVuexPlugin from "../shared_store/OrbitDbVuexPlugin.js";
 
 const RoomVuexPlugin = function (ipfsConfig) {
   this.config = ipfsConfig;
 
   return async (store) => {
     new Promise((resolve, reject) => {
-      const ipfs = new IPFS({ ...this.config });
+      const ipfs = IPFS.create({ ...this.config });
 
       ipfs.once('ready', () => {
         ipfs.id((err, info) => {
@@ -117,4 +98,14 @@ const RoomVuexPlugin = function (ipfsConfig) {
   };
 };
 
-module.exports = { IpfsPlugin, RoomVuexPlugin };
+export default async ({ app }, inject) => {
+    // const vuexRoom = new RoomVuexPlugin(config.ipfs);
+    // const ipfsPlugin = new IpfsPlugin(config.ipfs, inject);
+    // const orbitDbPlugin = new OrbitDBPlugin(config.ipfs);
+    // const orbitDbVuexPlugin = await new OrbitDBVuexPlugin(config.ipfs);
+  
+    // Vue.use(ipfsPlugin);
+    // Vue.use(orbitDbPlugin);
+}
+
+// export default { IpfsPlugin, RoomVuexPlugin };

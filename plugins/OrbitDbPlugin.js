@@ -1,4 +1,4 @@
-import IPFS from 'ipfs'
+import IPFS from 'ipfs-core'
 import OrbitDB from 'orbit-db'
 
 //  TODO: make this a Vuex plugin.
@@ -9,21 +9,24 @@ const OrbitDBPlugin = async function (ipfsConfig) {
 
   return {
     install: async function (Vue) {
-      const ipfs = new IPFS({ ...ipfsConfig });
+      
+      
+      async function createDB() {
+        console.log('Installing OrbitDB ...')
+        const ipfs = await IPFS.create({ ...ipfsConfig });
 
-      console.log('Installing OrbitDB ...')
+        const orbitdb = new OrbitDB(ipfs)
+        const db = await orbitdb.keyvalue('broampSharedStore')  
+        //   new Promise((resolve, reject) => {
+        //     ipfs.on('error', e => reject(e))
+        //     ipfs.on('ready', async () => {
+        //       // Create a database
+        //       const orbitdb = new OrbitDB(ipfs)
 
-      function createDB() {
-        new Promise((resolve, reject) => {
-          ipfs.on('error', e => reject(e))
-          ipfs.on('ready', async () => {
-            // Create a database
-            const orbitdb = new OrbitDB(ipfs)
-
-            const db = await orbitdb.keyvalue('broampSharedStore')
-            resolve(db)
-          })
-        })
+        //       const db = await orbitdb.keyvalue('broampSharedStore')
+        //       resolve(db)
+        //     })
+        //   })
       }
 
       try {
