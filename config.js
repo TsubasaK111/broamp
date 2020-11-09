@@ -11,7 +11,9 @@ const config = {
     config: {
       Addresses: {
         Swarm: [
-          '/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star',
+          // // TODO: find better swarm servers. Apparently websocket stars are no longer accepted?
+
+          // '/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star',
           // locally hosted websocket star
           // '/ip4/0.0.0.0/tcp/9090/wss/p2p-webrtc-star',
 

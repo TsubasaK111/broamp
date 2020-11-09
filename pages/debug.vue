@@ -1,5 +1,5 @@
 <template>
-<div class="debug">
+  <div class="debug">
     <div class="inputBox">
       <label class="inputLabel">
         <i class="fa fa-cloud-upload" /> select file
@@ -95,20 +95,20 @@ export default {
             // window.open(fileURL);
             // window.open(added[0].path);
 
-            const audioSrcUrl = `https://ipfs.io/ipfs/${added[0].hash}`;
-            this.log(`sourceUrl: audioSrcUrl`);
+            const audioSrcUrl = `https://ipfs.io/ipfs/${added[0].hash}`
+            this.log(`sourceUrl: audioSrcUrl`)
 
-            return audioSrcUrl;
+            return audioSrcUrl
           })
-          .then(audioSrcUrl => {
-            this.$store.dispatch("broadcastAudioSrc", audioSrcUrl);
-          });
-      };
+          .then((audioSrcUrl) => {
+            this.$store.dispatch('broadcastAudioSrc', audioSrcUrl)
+          })
+      }
 
-      reader.readAsArrayBuffer(file);
-    }
-  }
-};
+      reader.readAsArrayBuffer(file)
+    },
+  },
+}
 </script>
 
 <style>
