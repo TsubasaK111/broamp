@@ -2,9 +2,9 @@ import Vue from "vue";
 import Vuex from "vuex";
 import App from "./App.vue";
 
-import { IpfsPlugin, RoomVuexPlugin } from "./shared_store";
+import { IpfsPlugin, RoomVuexPlugin } from "./shared_store/index.js";
 // import { OrbitDBPlugin } from "./shared_store/OrbitDbPlugin";
-import { createOrbitDBVuexPlugin } from "./shared_store/OrbitDbVuexPlugin";
+import { createOrbitDBVuexPlugin } from "./shared_store/OrbitDbVuexPlugin.js";
 
 import config from "./config";
 import { actions } from "./store/actions";
@@ -15,8 +15,7 @@ const setupVue = async () => {
   // const vuexRoom = new RoomVuexPlugin(config.ipfs);
   const ipfsPlugin = new IpfsPlugin(config.ipfs);
   // const orbitDbPlugin = new OrbitDBPlugin(config.ipfs);
-  const orbitDbVuexPlugin = await new createOrbitDBVuexPlugin(config.ipfs);
-
+  const orbitDbVuexPlugin = await new createOrbitDbVuexPlugin(config.ipfs);
 
   Vue.use(Vuex);
   Vue.use(ipfsPlugin);

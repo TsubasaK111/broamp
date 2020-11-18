@@ -1,4 +1,4 @@
-var Sntp = require('sntp');
+import * as Sntp from 'sntp';
 
 // All options are optional
 

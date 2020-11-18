@@ -1,4 +1,4 @@
-export const actions = {
+export default {
   recieveAudioSrc(store, newAudioSrc) {
     // loadFile(event);
     store.commit("recieveAudioSrc", newAudioSrc);
