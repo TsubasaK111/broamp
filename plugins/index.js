@@ -4,7 +4,6 @@ import * as Room from 'ipfs-pubsub-room';
 import config from "~/config";
 import Vue from "vue";
 // import { OrbitDBPlugin } from "./shared_store/OrbitDbPlugin";
-import OrbitDBVuexPlugin from "../shared_store/OrbitDbVuexPlugin.js";
 
 const RoomVuexPlugin = function (ipfsConfig) {
   this.config = ipfsConfig;
@@ -102,7 +101,6 @@ export default async ({ app }, inject) => {
     // const vuexRoom = new RoomVuexPlugin(config.ipfs);
     // const ipfsPlugin = new IpfsPlugin(config.ipfs, inject);
     // const orbitDbPlugin = new OrbitDBPlugin(config.ipfs);
-    // const orbitDbVuexPlugin = await new OrbitDBVuexPlugin(config.ipfs);
   
     // Vue.use(ipfsPlugin);
     // Vue.use(orbitDbPlugin);

@@ -11,7 +11,7 @@ const OrbitDBPlugin = async function (ipfsConfig) {
       
       
       async function createDB() {
-        console.log('Installing OrbitDB ...')
+        console.log('Installing OrbitDB Plugin ...')
         const ipfs = await IPFS.create({ ...ipfsConfig });
 
         const orbitdb = new OrbitDB(ipfs)
