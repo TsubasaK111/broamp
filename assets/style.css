@@ -4,7 +4,7 @@ body {
   font-family: Verdana;
 }
 
-input[type="file"] {
+input[type='file'] {
   display: none;
 }
 
@@ -44,14 +44,14 @@ input[type="file"] {
   /* letter-spacing: -2px; */
   letter-spacing: -0.0625em;
   color: white;
-  background: linear-gradient(#FFF, #FFCA71, #FF8600);
+  background: linear-gradient(#fff, #ffca71, #ff8600);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   -webkit-text-stroke: 2.5px black;
 }
 
 .visBox {
-  display: flex; 
+  display: flex;
 }
 
 .buttonsBox {
