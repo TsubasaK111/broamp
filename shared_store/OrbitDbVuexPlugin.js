@@ -4,34 +4,59 @@ import EventEmitter from 'events'
 
 export default class OrbitDBVuexPlugin {
   constructor(ipfs) {
-    this.createMockDB()
+    this.createInitEvents()
     this.createDB(ipfs)
     return this.install()
   }
 
-  createMockDB() {
-    const initEvents = new EventEmitter()
+  // event listener/emitter for detecting when orbitDb is actually ready.
+  createInitEvents() {
+    this.initEvents = new EventEmitter()
+  }
 
-    this.db = {
-      initEvents,
+
+  async createDB(ipfs) {
+    // reuses same IPFS node used for uploading audio files (in debug.vue)
+    this.ipfs = await ipfs
+
+    console.log('installing OrbitDB Vuex Plugin ...')
+
+    // Create a database
+    const orbitdb = await OrbitDB.createInstance(this.ipfs)
+
+    const accessRights = {
+      // give access to everyone
+      write: ['*'],
     }
+
+    const keyValueDb = await orbitdb.keyvalue('broampSharedStore', accessRights)
+    await keyValueDb.load()
+
+    console.log('loaded keyValueDb:', keyValueDb)
+    console.log('loaded keyValueDb length:', Object.keys(keyValueDb).length)
+
+    await keyValueDb.put('cheese', 'fromage')
+
+    console.log(keyValueDb.get('cheese'));
+    // event is caught in mocked db passed to Vuex
+    this.initEvents.emit('actualDbReady', keyValueDb)
   }
 
   install() {
     try {
-      const db = this.db
+      const initEvents = this.initEvents
 
       return (store) => {
-        db.initEvents.on('actualDbReady', (actualDb) => {
+        initEvents.on('actualDbReady', (actualDb) => {
           console.log(
-            'OrbitDb installed and ready! address:',
+            'orbitDb installed and ready! address:',
             actualDb.address.toString()
           )
 
-          Object.assign(db, actualDb)
+          const db = actualDb
 
           db.events.on('replicated', (address) => {
-            console.log(`DB just replicated with peer ${address}.`)
+            console.log(`db just replicated with peer ${address}.`)
             const newState = {
               audioSrc: db.get('audioSrc'),
               audioStatus: db.get('audioStatus'),
@@ -72,57 +97,35 @@ export default class OrbitDBVuexPlugin {
             console.log('write triggered')
           })
 
-          db.put = actualDb.put
-
+          store.subscribe((mutation) => {
+            switch (mutation.type) {
+              case 'broadcastAudioSrc':
+                console.log('broadcastAudioSrc subs', mutation.payload)
+                db.put('audioSrc', mutation.payload)
+                return
+              case 'broadcastAudioStatus':
+                console.log(
+                  'broadcastAudioStatus subs. audioStatus:',
+                  mutation.payload
+                )
+                db.put('audioStatus', mutation.payload)
+                return
+              case 'broadcastAudioPlay':
+                db.put('audioPaused', false)
+                return
+              case 'broadcastAudioPause':
+                db.put('audioPaused', true)
+                return
+              default:
+              // do nothing.
+            }
+          })
           console.log('actual keyvalue db merged:', db)
-        })
-
-        store.subscribe((mutation) => {
-          switch (mutation.type) {
-            case 'broadcastAudioSrc':
-              console.log('broadcastAudioSrc subs', mutation.payload)
-              db.put('audioSrc', mutation.payload)
-              return
-            case 'broadcastAudioStatus':
-              console.log(
-                'broadcastAudioStatus subs. audioStatus:',
-                mutation.payload
-              )
-              db.put('audioStatus', mutation.payload)
-              return
-            case 'broadcastAudioPlay':
-              db.put('audioPaused', false)
-              return
-            case 'broadcastAudioPause':
-              db.put('audioPaused', true)
-              return
-            default:
-            // do nothing.
-          }
+          console.log('merged keyValueDb length:', Object.keys(db).length)
         })
       }
     } catch (e) {
       console.log(e, 'Error installing orbit-db plugin...')
     }
-  }
-
-  async createDB(ipfs) {
-    // reuses same IPFS node used for uploading audio files (in debug.vue)
-    this.ipfs = await ipfs
-
-    console.log('Installing OrbitDB Vuex Plugin ...')
-
-    // Create a database
-    const orbitdb = await OrbitDB.createInstance(this.ipfs)
-
-    const accessRights = {
-      // give access to everyone
-      write: ['*'],
-    }
-
-    const keyValueDb = await orbitdb.keyvalue('broampSharedStore', accessRights)
-    await keyValueDb.load()
-
-    this.db.initEvents.emit('actualDbReady', keyValueDb)
   }
 }
