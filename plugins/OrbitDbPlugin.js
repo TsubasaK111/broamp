@@ -3,19 +3,17 @@ import OrbitDB from 'orbit-db'
 
 //  TODO: make this a Vuex plugin.
 const OrbitDBPlugin = async function (ipfsConfig) {
-  console.log(ipfsConfig);
-  this.config = ipfsConfig;
+  console.log(ipfsConfig)
+  this.config = ipfsConfig
 
   return {
     install: async function (Vue) {
-      
-      
       async function createDB() {
         console.log('Installing OrbitDB Plugin ...')
-        const ipfs = await IPFS.create({ ...ipfsConfig });
+        const ipfs = await IPFS.create({ ...ipfsConfig })
 
         const orbitdb = new OrbitDB(ipfs)
-        const db = await orbitdb.keyvalue('broampSharedStore')  
+        const db = await orbitdb.keyvalue('broampSharedStore')
         //   new Promise((resolve, reject) => {
         //     ipfs.on('error', e => reject(e))
         //     ipfs.on('ready', async () => {
@@ -29,7 +27,7 @@ const OrbitDBPlugin = async function (ipfsConfig) {
       }
 
       try {
-        Vue.prototype.$orbit = await createDB();
+        Vue.prototype.$orbit = await createDB()
         // Vue.prototype.$orbit = db;
         // Vue.prototype.$orbit = {
         //   get(query) {
@@ -46,8 +44,8 @@ const OrbitDBPlugin = async function (ipfsConfig) {
       } catch (e) {
         console.log(e, 'Error installing orbit-db plugin...')
       }
-    }
+    },
   }
 }
 
-module.exports = { OrbitDBPlugin };
+module.exports = { OrbitDBPlugin }

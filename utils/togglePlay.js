@@ -1,14 +1,14 @@
 const togglePlay = (event) => {
-  const buttonEl = event.target;
-  const audioEl = document.getElementById("audioElement");
-  
+  const buttonEl = event.target
+  const audioEl = document.getElementById('audioElement')
+
   if (audioEl.paused) {
-    buttonEl.textContent = "⏸";
+    buttonEl.textContent = '⏸'
     audioEl.play()
   } else {
-    buttonEl.textContent = "▶️";
-    audioEl.pause();
+    buttonEl.textContent = '▶️'
+    audioEl.pause()
   }
-};
+}
 
-export default togglePlay;
+export default togglePlay
