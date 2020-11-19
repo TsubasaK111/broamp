@@ -13,15 +13,8 @@
       </label>
     </div>
 
-    <div class="debug-box">
-      <h2>peers:</h2>
-      <div>{{ $store.state.peers }}</div>
-      <h2>audio url:</h2>
-      <div>{{ $store.state.audioSrc || 'n/a' }}</div>
-      <h2>status:</h2>
-      <div id="progress-output">{{ $store.state.log }}</div>
-    </div>
-
+    <PlayerText />
+    
     <div class="inputBox">
       <h2>controls:</h2>
       <AudioElement />
@@ -38,15 +31,8 @@ export default {
   },
   methods: {
     log: function (line) {
-      let message
-
-      if (line.message) {
-        message = `Error: ${line.message.toString()}`
-      } else {
-        message = line
-      }
-
-      this.$store.dispatch('log', message)
+      if (line.message) this.$store.dispatch('log',`Error: ${line.message.toString()}`)
+      this.$store.dispatch('log', line)
     },
 
     loadFile: function (event, options = {}) {
