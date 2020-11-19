@@ -2,6 +2,7 @@
   <div class="visBox">
     <div id="spectrogramVis"></div>
     <div id="verticalFrequencyVis"></div>
+    <div id="gkheadCanvas"></div>
   </div>
 </template>
 
@@ -9,6 +10,7 @@
 import AudioSource from '../utils/audioSource'
 import VerticalFrequencyVis from '../visualizations/verticalFrequencyVis'
 import DynamicSpectrogram from '../visualizations/dynamicSpectrogram'
+import gkheadCanvas from '../utils/gkheadCanvas'
 
 export default {
   name: 'Visualizations',
@@ -16,10 +18,11 @@ export default {
     document.addEventListener('DOMContentLoaded', () => {
       const audioElement = document.getElementById('audioElement')
 
+      console.log('audioElement', audioElement)
       const audioSource = new AudioSource()
       new VerticalFrequencyVis(audioSource.analyser)
       new DynamicSpectrogram(audioSource, audioElement)
-      // gkheadCanvas()
+      gkheadCanvas()
     })
   },
 }
@@ -27,5 +30,6 @@ export default {
 
 <style>
 .visBox {
+  display: flex; 
 }
 </style>
