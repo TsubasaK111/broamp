@@ -8,6 +8,7 @@
     @canplaythrough="$store.dispatch('broadcastAudioStatus', 'canPlayThrough')"
     @play="$store.dispatch('broadcastPlay')"
     @pause="$store.dispatch('broadcastPause')"
+    crossorigin="anonymous"
   ></audio>
 </template>
 

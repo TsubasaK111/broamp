@@ -17,7 +17,7 @@
       <h2>peers:</h2>
       <div>{{ $store.state.peers }}</div>
       <h2>audio url:</h2>
-      <div>{{ $store.state.audioSrc || "n/a" }}</div>
+      <div>{{ $store.state.audioSrc || 'n/a' }}</div>
       <h2>status:</h2>
       <div id="progress-output">{{ $store.state.log }}</div>
     </div>
@@ -26,7 +26,7 @@
       <h2>controls:</h2>
       <AudioElement />
     </div>
-    <Visualizations />
+    <Visualizations v-if="audioCanPlay" />
   </div>
 </template>
 
@@ -98,6 +98,11 @@ export default {
       }
 
       reader.readAsArrayBuffer(file)
+    },
+  },
+  computed: {
+    audioCanPlay: function () {
+      return this.$store.state.audioStatus==="canPlayThrough"
     },
   },
 }
