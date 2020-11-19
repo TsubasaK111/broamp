@@ -1,4 +1,8 @@
 export default {
+  log(store, newLog) {
+    store.commit('log', newLog)
+  },
+
   recieveAudioSrc(store, newAudioSrc) {
     // loadFile(event);
     store.commit('recieveAudioSrc', newAudioSrc)
@@ -31,9 +35,4 @@ export default {
   broadcastPause(store) {
     store.commit('broadcastAudioPause')
   },
-}
-
-export const makeActions = (db) => {
-  console.log('db:', db)
-  return actions
 }

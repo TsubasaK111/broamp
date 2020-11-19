@@ -18,8 +18,8 @@
       <div>{{ $store.state.peers }}</div>
       <h2>audioSrc:</h2>
       <div>{{ $store.state.audioSrc }}</div>
-      <h2>progress:</h2>
-      <div id="progress-output"></div>
+      <h2>status:</h2>
+      <div id="progress-output">{{ $store.state.log }}</div>
     </div>
 
     <div class="inputBox">
@@ -38,7 +38,6 @@ export default {
   },
   methods: {
     log: function (line) {
-      const output = document.getElementById('progress-output')
       let message
 
       if (line.message) {
@@ -47,13 +46,7 @@ export default {
         message = line
       }
 
-      if (message) {
-        const node = document.createTextNode(`${message}\r\n`)
-        output.appendChild(node)
-        output.scrollTop = output.offsetHeight
-        console.log(message)
-        return node
-      }
+      this.$store.dispatch('log', message)
     },
 
     loadFile: function (event, options = {}) {
@@ -71,10 +64,10 @@ export default {
         }
         const options = {
           progress: (addedBytes) => {
-            progress.textContent = `IPFS: Adding ${file.name} ${parseInt(
+            const progressText = `IPFS: Adding ${file.name} ${parseInt(
               (addedBytes / file.size) * 100
             )}%\r\n`
-            this.log(progress.textContent)
+            this.log(progressText)
           },
         }
 

@@ -27,7 +27,7 @@ export default class OrbitDBVuexPlugin {
             'OrbitDb installed and ready! address:',
             actualDb.address.toString()
           )
-      
+
           Object.assign(db, actualDb)
 
           db.events.on('replicated', (address) => {
@@ -39,7 +39,7 @@ export default class OrbitDBVuexPlugin {
             }
             console.log('store.state', store.state)
             console.log('newState:', newState)
-  
+
             Object.entries(newState).forEach(([key, value]) => {
               if (value !== store.state[key] && value !== undefined) {
                 console.log(
@@ -67,11 +67,11 @@ export default class OrbitDBVuexPlugin {
               }
             })
           })
-  
+
           db.events.on('write', (dbname, hash, entry) => {
             console.log('write triggered')
           })
-          
+
           db.put = actualDb.put
 
           console.log('actual keyvalue db merged:', db)

@@ -1,4 +1,9 @@
 export default {
+  log(state, newLog) {
+    console.log('debug log:', newLog)
+    state.log = newLog
+  },
+
   recieveAudioSrc(state, newAudioSrc) {
     console.log('recieveAudioSrc mttn')
     state.audioSrc = newAudioSrc
