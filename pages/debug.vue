@@ -88,7 +88,7 @@ export default {
             // window.open(added.path);
 
             const audioSrcUrl = `https://ipfs.io/ipfs/${cid}`
-            this.log(`Url generated for audio file`)
+            this.log(`url generated, propagating through network...`)
 
             return audioSrcUrl
           })

@@ -19,8 +19,6 @@ export default class OrbitDBVuexPlugin {
     // reuses same IPFS node used for uploading audio files (in debug.vue)
     this.ipfs = await ipfs
 
-    console.log('installing OrbitDB Vuex Plugin ...')
-
     // Create a database
     const orbitdb = await OrbitDB.createInstance(this.ipfs)
 
@@ -116,7 +114,6 @@ export default class OrbitDBVuexPlugin {
           })
           
           store.dispatch('log', 'loaded! please select a song to play.')
-          console.log('broampSharedStore configured and ready:', db)
         })
       }
     } catch (e) {

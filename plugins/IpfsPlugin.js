@@ -1,12 +1,9 @@
 import Vue from 'vue'
 import IPFS from 'ipfs-core'
-import config from '~/config'
+import config from '~/ipfs.config'
 
 async function ipfsPlugin({ app }, inject) {
-  console.log('installing IpfsPlugin...')
-
   inject('ipfs', await ipfsPlugin.ipfs)
-  console.log('ipfs injected?')
 
   // const ipfsPlugin = new IpfsPlugin(config.ipfs, inject);
   // Vue.use(ipfsPlugin);

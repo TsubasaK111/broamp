@@ -1,5 +1,4 @@
 import OrbitDbVuexPlugin from '~/shared_store/OrbitDbVuexPlugin'
-import config from '~/config'
 import IpfsPlugin from '~/plugins/IpfsPlugin'
 
 const orbitDbVuexPlugin = new OrbitDbVuexPlugin(IpfsPlugin.ipfs)
