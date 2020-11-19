@@ -27,6 +27,9 @@ export default {
     store.commit('broadcastAudioSrc', newAudioSrc)
   },
   broadcastAudioStatus(store, newAudioStatus) {
+    if(newAudioStatus === "canPlayThrough"){
+      store.commit('log', 'ready to play!')
+    }
     store.commit('broadcastAudioStatus', newAudioStatus)
   },
   broadcastPlay(store) {

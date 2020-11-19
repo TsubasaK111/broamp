@@ -16,8 +16,8 @@
     <div class="debug-box">
       <h2>peers:</h2>
       <div>{{ $store.state.peers }}</div>
-      <h2>audioSrc:</h2>
-      <div>{{ $store.state.audioSrc }}</div>
+      <h2>audio url:</h2>
+      <div>{{ $store.state.audioSrc || "n/a" }}</div>
       <h2>status:</h2>
       <div id="progress-output">{{ $store.state.log }}</div>
     </div>
@@ -88,7 +88,7 @@ export default {
             // window.open(added.path);
 
             const audioSrcUrl = `https://ipfs.io/ipfs/${cid}`
-            this.log(`audioSrcUrl: ${audioSrcUrl}`)
+            this.log(`Url generated for audio file`)
 
             return audioSrcUrl
           })

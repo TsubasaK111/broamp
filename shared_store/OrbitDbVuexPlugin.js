@@ -32,13 +32,7 @@ export default class OrbitDBVuexPlugin {
     const keyValueDb = await orbitdb.keyvalue('broampSharedStore', accessRights)
     await keyValueDb.load()
 
-    console.log('loaded keyValueDb:', keyValueDb)
-    console.log('loaded keyValueDb length:', Object.keys(keyValueDb).length)
-
-    await keyValueDb.put('cheese', 'fromage')
-
-    console.log(keyValueDb.get('cheese'));
-    // event is caught in mocked db passed to Vuex
+    // event is caught in instantiated Vuex plugin
     this.initEvents.emit('actualDbReady', keyValueDb)
   }
 
@@ -120,8 +114,9 @@ export default class OrbitDBVuexPlugin {
               // do nothing.
             }
           })
-          console.log('actual keyvalue db merged:', db)
-          console.log('merged keyValueDb length:', Object.keys(db).length)
+          
+          store.dispatch('log', 'loaded! please select a song to play.')
+          console.log('broampSharedStore configured and ready:', db)
         })
       }
     } catch (e) {
