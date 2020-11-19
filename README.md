@@ -1,3 +1,4 @@
+# ![broamp logo](./assets/pong.svg) broamp
 # Broamp (IPFS-Pubsub-Vue Showcase)
 
 A simple synchronized audio playback app that utilizes IPFS, IPFS-Pubsub-Room, OrbitDB, Vue, and Vuex
