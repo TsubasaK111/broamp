@@ -34,5 +34,18 @@ export default {
   ],
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
-  build: {},
+  build: {
+    extend(config, { isDev, isClient }) {
+      if(isClient){
+          config.externals = [
+            "dns",
+            // other server-only dependencies that we may have to exclude:
+            // "child_process",
+            // "fs",
+            // "net",
+            // "tls",
+          ]
+      }
+    }
+  },
 }
