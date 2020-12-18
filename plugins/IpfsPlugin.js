@@ -9,8 +9,6 @@ async function ipfsPlugin({ app }, inject) {
   // Vue.use(ipfsPlugin);
 }
 
-ipfsPlugin.ipfs = IPFS.create()
-// TODO: make ipfs node configurable:
-// ipfsPlugin.ipfs = IPFS.create({ ...config });
+ipfsPlugin.ipfs = IPFS.create({ ...config.ipfs });
 
 export default ipfsPlugin
