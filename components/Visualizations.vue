@@ -15,15 +15,16 @@ import gkheadCanvas from '../utils/gkheadCanvas'
 export default {
   name: 'Visualizations',
   mounted() {
-    document.addEventListener('DOMContentLoaded', () => {
-      const audioElement = document.getElementById('audioElement')
+    // TODO: AudioElement and Visualizations components are too interlinked.
+    // Design a way to decouple them.
+    
+    const audioElement = document.getElementById('audioElement')
 
-      console.log('audioElement', audioElement)
-      const audioSource = new AudioSource()
-      new VerticalFrequencyVis(audioSource.analyser)
-      new DynamicSpectrogram(audioSource, audioElement)
-      gkheadCanvas()
-    })
+    const audioSource = new AudioSource()
+
+    new VerticalFrequencyVis(audioSource.analyser)
+    new DynamicSpectrogram(audioSource, audioElement)
+    // gkheadCanvas()
   },
 }
 </script>

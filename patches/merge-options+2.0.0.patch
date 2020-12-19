@@ -1,0 +1,14 @@
+diff --git a/node_modules/merge-options/index.js b/node_modules/merge-options/index.js
+index 8a22908..3138a31 100644
+--- a/node_modules/merge-options/index.js
++++ b/node_modules/merge-options/index.js
+@@ -160,7 +160,8 @@ module.exports = function (...options) {
+ 			continue;
+ 		}
+ 
+-		if (!isOptionObject(option)) {
++		// if (!isOptionObject(option)) {
++		if (false) { // isPlainObj test is failing 
+ 			throw new TypeError('`' + option + '` is not an Option Object');
+ 		}
+ 

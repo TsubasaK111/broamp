@@ -4,10 +4,12 @@
     :src="$store.state.audioSrc"
     :paused="$store.state.audioPaused"
     :volume="$store.state.audioVolume"
-    controls="true"
     @canplaythrough="$store.dispatch('broadcastAudioStatus', 'canPlayThrough')"
     @play="$store.dispatch('broadcastPlay')"
     @pause="$store.dispatch('broadcastPause')"
+    controls="true"
+    preload="auto"
+    crossorigin="anonymous"
   ></audio>
 </template>
 
