@@ -1,6 +1,18 @@
+import fs from 'fs'
+import path from 'path'
+
 export default {
   // Target (https://go.nuxtjs.dev/config-target)
   target: 'static',
+
+  server: {
+    https: {
+      // TODO: make dev/prod split certs
+      // NOTE: use mkcert to self-sign a SSL cert for localhost HTTPS & WSS
+      key: fs.readFileSync(path.resolve(__dirname, 'localhost+2-key.pem')),
+      cert: fs.readFileSync(path.resolve(__dirname, 'localhost+2.pem'))
+    }
+  },
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
