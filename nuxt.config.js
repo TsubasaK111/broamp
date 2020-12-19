@@ -7,10 +7,10 @@ export default {
 
   server: {
     https: {
-      // TODO: make dev/prod split certs
       // NOTE: use mkcert to self-sign a SSL cert for localhost HTTPS & WSS
+      // TODO: make dev/prod split certs
       key: fs.readFileSync(path.resolve(__dirname, 'localhost+2-key.pem')),
-      cert: fs.readFileSync(path.resolve(__dirname, 'localhost+2.pem'))
+      cert: fs.readFileSync(path.resolve(__dirname, 'localhost+2.pem')),
     }
   },
 

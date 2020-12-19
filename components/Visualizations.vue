@@ -16,7 +16,7 @@ export default {
   name: 'Visualizations',
   mounted() {
     // TODO: AudioElement and Visualizations components are too interlinked.
-    // Design a better way to decouple them.
+    // Design a way to decouple them.
     
     const audioElement = document.getElementById('audioElement')
 
@@ -26,9 +26,6 @@ export default {
     new DynamicSpectrogram(audioSource, audioElement)
     // gkheadCanvas()
   },
-  updated(){
-
-  }
 }
 </script>
 

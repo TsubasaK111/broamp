@@ -19,9 +19,6 @@ export default class OrbitDBVuexPlugin {
     // reuses same IPFS node used for uploading audio files (in debug.vue)
     this.ipfs = await ipfs
 
-    console.log("ipfs",ipfs)
-    console.log("ipfs.id",ipfs.id)
-
     // Create a database
     const orbitdb = await OrbitDB.createInstance(this.ipfs)
 
